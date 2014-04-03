@@ -64,8 +64,12 @@ namespace cs296
       b2EdgeShape shape;     
       shape.Set(b2Vec2(-90.0f, 0.0f), b2Vec2(90.0f, 0.0f));
       b2BodyDef bd; 
+      b2FixtureDef fd;
+      fd.shape = &shape;
+      fd.density = 20.0f;
+      fd.friction = 0.5f;
       b1 = m_world->CreateBody(&bd);
-      b1->CreateFixture(&shape, 0.0f);
+      b1->CreateFixture(&fd);
     }
           
     //~ {
@@ -440,87 +444,116 @@ namespace cs296
 
      //One side rotating platform
      {
-	/*! \par Block 14: One side Hinged platform
-         */
-
-	/*! \par 
-	 * Plank that will be rotating
-	 * Variable:shape :: Value: Width: 0.4, Length:25.0 :: Type: PolygonShape. <br>
-         * Variable:fd :: Value: Density=0.0001, shape=shape :: Type: b2FixtureDef. <br>
-         * Variable:bd :: Value: Position x=32.5 y=24 Type=b2_dynamicBody :: DataType:b2BodyDef. <br>
-         */ 
+		 
+	//Horizontal top rod
       b2PolygonShape shape;
       shape.SetAsBox(12.5f, 0.5f);
       b2BodyDef bd;
-      bd.position.Set(32.5f, 24.0f);
+      bd.position.Set(0.0f, 21.5f);
       bd.type = b2_dynamicBody;
       b2Body* body = m_world->CreateBody(&bd);
       b2FixtureDef *fd = new b2FixtureDef;
-      fd->density = 0.0001f;
+      fd->density = 0.1f;
       fd->shape = new b2PolygonShape;
       fd->shape = &shape;
       body->CreateFixture(fd);
-      
+     // Left hand side vertical rod 
       b2PolygonShape shape2;
-      shape2.SetAsBox(0.5f, 12.5f);
+      shape2.SetAsBox(0.5f, 10.0f);
       b2BodyDef bd2;
-      bd2.position.Set(20.5f, 11.5f);
+      bd2.position.Set(-12.0f, 11.5f);
       bd2.type = b2_dynamicBody;
       b2Body* body2 = m_world->CreateBody(&bd2);
       b2FixtureDef *fd2 = new b2FixtureDef;
-      fd2->density = 0.0001f;
+      fd2->density = 0.1f;
       fd2->shape = new b2PolygonShape;
       fd2->shape = &shape2;
       body2->CreateFixture(fd2);
-      
+     //Right hand side vertical rod  
       b2BodyDef bd3;
-      bd3.position.Set(44.5f, 11.5f);
+      bd3.position.Set(12.0f, 11.5f);
       bd3.type = b2_dynamicBody;
       b2Body* body3 = m_world->CreateBody(&bd3);
       body3->CreateFixture(fd2);
-      
+     // Lower horizontal rod 
       b2BodyDef bd4;
-      bd4.position.Set(32.5f, 18.0f);
+      bd4.position.Set(0.0f, 15.5f);
       bd4.type = b2_dynamicBody;
       b2Body* body4 = m_world->CreateBody(&bd4);
       body4->CreateFixture(fd);
-
-
-	/*! \par 
-	 * Anchor to join circle and plank.
-	 * Variable:jointDef :: Value: collideConnected=false, Initialized with anchor at center of circle :: Type: RevoluteJointDef. <br>
-         */      
+     //Joint for top rod and left rod
       b2RevoluteJointDef jointDef;
-      b2Vec2 v1(20.5f,24.0f);
+      b2Vec2 v1(-12.0f,21.5f);
       jointDef.Initialize(body,body2,v1);
       jointDef.localAnchorA.Set(-12.0f,0.0f) ;
-      jointDef.localAnchorB.Set(0.0f,12.0f);
+      jointDef.localAnchorB.Set(0.0f,9.5f);
       jointDef.collideConnected = false;
       m_world->CreateJoint(&jointDef);		
-      
+      //Joint for top rod and right rod
       b2RevoluteJointDef jointDef2;
-      b2Vec2 v2(44.5f,24.0f);
+      b2Vec2 v2(12.0f,24.0f);
       jointDef2.Initialize(body,body3,v2);
       jointDef2.localAnchorA.Set(12.0f,0.0f) ;
-      jointDef2.localAnchorB.Set(0.0f,12.0f);
+      jointDef2.localAnchorB.Set(0.0f,9.5f);
       jointDef2.collideConnected = false;
       m_world->CreateJoint(&jointDef2);		
-      
+      //joint for bottom rod and left rod
       b2RevoluteJointDef jointDef3;
-      b2Vec2 v3(20.5f,18.0f);
+      b2Vec2 v3(-12.0f,18.0f);
       jointDef3.Initialize(body4,body2,v3);
       jointDef3.localAnchorA.Set(-12.0f,0.0f) ;
-      jointDef3.localAnchorB.Set(0.0f,6.0f);
+      jointDef3.localAnchorB.Set(0.0f,4.0f);
       jointDef3.collideConnected = false;
       m_world->CreateJoint(&jointDef3);		
-      
+      //joint for bottom rod and right rod
       b2RevoluteJointDef jointDef4;
-      b2Vec2 v4(44.5f,18.0f);
+      b2Vec2 v4(12.0f,18.0f);
       jointDef4.Initialize(body4,body3,v4);
       jointDef4.localAnchorA.Set(12.0f,0.0f) ;
-      jointDef4.localAnchorB.Set(0.0f,6.0f);
+      jointDef4.localAnchorB.Set(0.0f,4.0f);
       jointDef4.collideConnected = false;
-      m_world->CreateJoint(&jointDef4);		
+      m_world->CreateJoint(&jointDef4);	
+      //left tyre
+      b2Body* sbody;
+      b2CircleShape circle;
+      circle.m_radius = 2.5;
+      b2FixtureDef ballfd;
+      ballfd.shape = &circle;
+      ballfd.density = 1.0f;
+      ballfd.friction = 0.5f;
+      ballfd.restitution = 0.0f;
+      b2BodyDef ballbd;
+      ballbd.type = b2_dynamicBody;
+      ballbd.position.Set(-12.0f, 2.5f);
+      sbody = m_world->CreateBody(&ballbd);
+      sbody->CreateFixture(&ballfd);	
+      //right tyre
+      b2Body* sbody2;
+      b2BodyDef ballbd2;
+      ballbd2.type = b2_dynamicBody;
+      ballbd2.position.Set(12.0f, 2.5f);
+      sbody2 = m_world->CreateBody(&ballbd2);
+      sbody2->CreateFixture(&ballfd);	
+      //Joint joining right rod and right tyre
+      b2RevoluteJointDef jointDef5;
+      jointDef5.Initialize(sbody2,body3,sbody2->GetWorldCenter());
+      jointDef5.localAnchorB.Set(0.0f,-9.5f);
+      jointDef5.collideConnected = false;
+      m_world->CreateJoint(&jointDef5);	
+      jointDef5.enableMotor = true;
+      jointDef5.maxMotorTorque = 200000.0f;
+      jointDef5.motorSpeed = 36.0f;
+      //Joint joining left rod and left tyre
+      b2RevoluteJointDef jointDef6;
+      jointDef6.Initialize(sbody,body2,sbody->GetWorldCenter());
+      jointDef6.localAnchorB.Set(0.0f,-9.5f);
+      jointDef6.collideConnected = false;
+      m_world->CreateJoint(&jointDef6);	
+      jointDef6.enableMotor = true;
+      jointDef6.maxMotorTorque = 20000.0f;
+      jointDef6.motorSpeed = 36.0f;
+      sbody2->SetAngularVelocity(10.0f); 
+      sbody->SetAngularVelocity(-10.0f); 
      }
      //stopper
      //~ { 
