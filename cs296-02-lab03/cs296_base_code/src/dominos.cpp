@@ -204,14 +204,24 @@ namespace cs296
 	  spherebody = m_world->CreateBody(&ballbd);
 	  spherebody->CreateFixture(&ballfd);
 	  
-		b2Vec2 vertices[5];
-		vertices[4].Set(-0.25f, -3.75f);
-		vertices[3].Set(0.25f, -3.75f);
-		vertices[2].Set(0.25f, 0.25f);
-		vertices[1].Set(-3.75f, 0.25f);
+		//~ b2Vec2 vertices[6];
+		//~ vertices[5].Set(-0.25f, -3.75f);
+		//~ vertices[4].Set(0.25f, -3.75f);
+		//~ vertices[3].Set(0.25f, 0.25f);
+		//~ vertices[2].Set(-3.75f, 0.25f);
 		//~ vertices[1].Set(-3.75f, -0.25f);
+		//~ vertices[0].Set(-0.25f, -0.25f);
+		//~ int32 count = 6;
+		
+		b2Vec2 vertices[7];
+		vertices[3].Set(0.25f, 0.25f);
+		vertices[2].Set(0.25f, -3.75f);
+		vertices[1].Set(-0.25f, -3.75f);
+		vertices[4].Set(-0.25f, 0.25f);
 		vertices[0].Set(-0.25f, -0.25f);
-		int32 count = 5;
+		vertices[5].Set(-3.75f, 0.25f);
+		vertices[6].Set(-3.75f, -0.25f);
+		int32 count = 7;
 		
 		b2Body* L;
 		b2PolygonShape lshape;
@@ -228,7 +238,7 @@ namespace cs296
 		lbd.position.Set(20.f, 5.75f);
 		L = m_world->CreateBody(&lbd);
 		L->CreateFixture(&lfd);
-		
+
 		b2RevoluteJointDef jointDef;
 		jointDef.bodyA = spherebody;
 		jointDef.bodyB = L;
