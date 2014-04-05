@@ -48,6 +48,44 @@ namespace cs296
 *CreateFixture is used to fix a body to a parent body and hence many of its properties become local to the parent body.<br>
 *CreateBody creates a new body in the m_world.<br>
 */
+	b2Body* sbody; //left tyre of central part
+	b2Body* sbody2; //right tyre of central part
+	b2Body* spherebody; //rightmost tyre
+	b2Body* spherebody1; //leftmost tyre
+	b2RevoluteJointDef jointDefs5; // right rod right tyre centre
+	b2RevoluteJointDef jointDefs6; // left rod left tyre centre
+	b2RevoluteJointDef jointDef3; //back tyre and L3
+	b2RevoluteJointDef jointDef; //front tyre and L1
+	
+	void dominos_t::keyboard(unsigned char key)
+	{
+    
+    switch (key)
+    {
+      
+    //! Press 'd' to move forward.
+    case 'd':
+    spherebody1->ApplyTorque(50.f, false);
+	//~ spherebody1->ApplyLinearImpulse(b2Vec2(50,0), spherebody1->GetWorldCenter(), false);
+	//~ spherebody->ApplyLinearImpulse(b2Vec2(50,0), spherebody->GetWorldCenter(), false);
+	//~ sbody2->ApplyLinearImpulse(b2Vec2(50,0), sbody2->GetWorldCenter(), false);
+	//~ sbody->ApplyLinearImpulse(b2Vec2(50,0), sbody->GetWorldCenter(), false);
+	//spherebody1->ApplyLinearImpulse(b2Vec2(50,0), spherebody1->GetWorldCenter(), false);
+    break;
+      
+    //! Press 'a' to move backward.
+    case 'a':
+	//~ spherebody1->ApplyLinearImpulse(b2Vec2(-50,0), spherebody1->GetWorldCenter(), false);
+	//~ spherebody->ApplyLinearImpulse(b2Vec2(-50,0), spherebody->GetWorldCenter(), false);
+	//~ sbody2->ApplyLinearImpulse(b2Vec2(-50,0), sbody2->GetWorldCenter(), false);
+	//~ sbody->ApplyLinearImpulse(b2Vec2(-50,0), sbody->GetWorldCenter(), false);
+    //~ spherebody1->ApplyForce(b2Vec2(-50.f,0), spherebody1->GetWorldCenter(), true);
+    //spherebody1->ApplyForce( b2Vec2(-50,0), spherebody1->GetWorldCenter() );
+      break;
+	
+	}
+	}	
+
   dominos_t::dominos_t()
   {
 		
@@ -199,7 +237,7 @@ namespace cs296
       fd.filter.groupIndex = -1;
       fd.filter.categoryBits = 0x0002;
       fd.filter.maskBits = 0x0004;
-      fd.density = 0.1f;
+      fd.density = 1.f;
       fd.shape = &shape;
       body->CreateFixture(&fd);
      // Left hand side vertical rod 
@@ -219,7 +257,7 @@ namespace cs296
       fd2.filter.groupIndex = -1;
       fd2.filter.categoryBits = 0x0002;
       fd2.filter.maskBits = 0x0004;
-      fd2.density = 0.1f;
+      fd2.density = 1.f;
       fd2.shape = &shape2;
       body2->CreateFixture(&fd2);
      //Right hand side vertical rod  
@@ -267,7 +305,7 @@ namespace cs296
       jointDefs4.collideConnected = false;
       m_world->CreateJoint(&jointDefs4);	
       //left tyre
-      b2Body* sbody;
+      
       b2CircleShape circle;
       circle.m_radius = 2.0f;
       b2FixtureDef ballfds;
@@ -281,16 +319,14 @@ namespace cs296
       sbody = m_world->CreateBody(&ballbds);
       sbody->CreateFixture(&ballfds);	
       //right tyre
-      b2Body* sbody2;
       b2BodyDef ballbd2;
       ballbd2.type = b2_dynamicBody;
       ballbd2.position.Set(5.5f, 2.0f);
       sbody2 = m_world->CreateBody(&ballbd2);
       sbody2->CreateFixture(&ballfds);
-      sbody2->SetAngularVelocity(-10.0f); 
-      sbody->SetAngularVelocity(-10.0f);	
+	
       //Joint joining right rod and right tyre
-      b2RevoluteJointDef jointDefs5;
+      
       jointDefs5.Initialize(sbody2,body3,sbody2->GetWorldCenter());
       jointDefs5.localAnchorB.Set(0.0f,-6.0f);
       jointDefs5.collideConnected = false;
@@ -299,11 +335,12 @@ namespace cs296
       jointDefs5.maxMotorTorque = 200000.0f;
       jointDefs5.motorSpeed = 36.0f;
       //Joint joining left rod and left tyre
-      b2RevoluteJointDef jointDefs6;
+   
       jointDefs6.Initialize(sbody,body2,sbody->GetWorldCenter());
       jointDefs6.localAnchorB.Set(0.0f,-6.0f);
       jointDefs6.collideConnected = false;
-      m_world->CreateJoint(&jointDefs6);	
+      m_world->CreateJoint(&jointDefs6);
+      //var revJoint:b2RevoluteJoint = world.CreateJoint(def) as b2RevoluteJoint;	
       jointDefs6.enableMotor = true;
       jointDefs6.maxMotorTorque = 20000.0f;
       jointDefs6.motorSpeed = 36.0f;
@@ -312,13 +349,13 @@ namespace cs296
 		//front part
 		
 		//front tyre
-		b2Body* spherebody;
+		
 		b2BodyDef ballbd;
 		ballbd.type = b2_dynamicBody;
 		ballbd.position.Set(19.5f, 2.0f);
 		spherebody = m_world->CreateBody(&ballbd);
 		spherebody->CreateFixture(&ballfds);
-		spherebody->SetAngularVelocity(-10.0f);
+		
 
 		//L1
 		count = 4;
@@ -427,7 +464,7 @@ namespace cs296
 		lowerFork->CreateFixture(&lowerForkfd);
 		
 		//front tyre and L1
-		b2RevoluteJointDef jointDef;
+		
 		jointDef.bodyA = spherebody;
 		jointDef.bodyB = L1;
 		jointDef.localAnchorA.Set(0,0);
@@ -474,13 +511,11 @@ namespace cs296
 		//back part
 		
 		//back tyre
-		b2Body* spherebody1;
 		b2BodyDef ballbd1;
 		ballbd1.type = b2_dynamicBody;
 		ballbd1.position.Set(-18.5f,2.0f);
 		spherebody1 = m_world->CreateBody(&ballbd1);
 		spherebody1->CreateFixture(&ballfds);
-		spherebody1->SetAngularVelocity(-10.0f);
 		
 		//L3
 		b2Vec2 vertices3[4];
@@ -503,7 +538,7 @@ namespace cs296
 		L3->CreateFixture(&l3fd);
 		
 		//L3 and back tyre
-		b2RevoluteJointDef jointDef3;
+		
 		jointDef3.bodyA = spherebody1;
 		jointDef3.bodyB = L3;
 		jointDef3.localAnchorA.Set(0,0);
@@ -582,7 +617,7 @@ namespace cs296
 		b2FixtureDef fmFrame;
 		fmFrame.filter.groupIndex = -1;
 		fmFrame.filter.categoryBits = 0x0002;
-		fmFrame.density = 0.1f;
+		fmFrame.density = 1.f;
 		fmFrame.shape = &shapeOfMainFrame;
 		mFrame->CreateFixture(&fmFrame);
 		
@@ -596,7 +631,7 @@ namespace cs296
 		fbFrame.filter.groupIndex = -1;
 		fbFrame.filter.categoryBits = 0x0002;
 		fbFrame.filter.maskBits = 0x0002 | 0x000;
-		fbFrame.density = 0.1f;
+		fbFrame.density = 5.f;
 		fbFrame.shape = &BoxOnMainFrame;
 		bFrame->CreateFixture(&fbFrame);
 		
@@ -610,7 +645,7 @@ namespace cs296
 		bcFrame.filter.groupIndex = -1;
 		bcFrame.filter.categoryBits = 0x0002;
 		bcFrame.filter.maskBits = 0x0002;
-		bcFrame.density = 0.1f;
+		bcFrame.density = 5.f;
 		bcFrame.shape = &backFrame;
 		bckFrame->CreateFixture(&bcFrame);
 		
@@ -624,7 +659,7 @@ namespace cs296
 		froFrame.filter.groupIndex = -1;
 		froFrame.filter.categoryBits = 0x0002;
 		froFrame.filter.maskBits = 0x0002;
-		froFrame.density = 0.1f;
+		froFrame.density = 5.f;
 		froFrame.shape = &frontFrame;
 		fronFrame->CreateFixture(&froFrame);
 		
