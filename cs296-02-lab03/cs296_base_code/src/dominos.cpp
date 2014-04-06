@@ -205,6 +205,9 @@ namespace cs296
 		mainTopjoint.Initialize(attachCenterFrame,centerTop,centerTop->GetWorldCenter());
 		mainTopjoint.localAnchorA.Set(0.0f,1.75f) ;
 		mainTopjoint.localAnchorB.Set(0.0f,0.0f);
+		mainTopjoint.enableLimit = true;
+		mainTopjoint.upperAngle = 0.5f;
+		mainTopjoint.lowerAngle = -0.5f;
 		mainTopjoint.collideConnected = false;
 		m_world->CreateJoint(&mainTopjoint);		
 		//Joint for main frame and bottom rod 
@@ -266,7 +269,7 @@ namespace cs296
         b2RevoluteJointDef mainBackjoint;
 		mainBackjoint.Initialize(backFrame,backPart3,backPart3->GetWorldCenter());
 		mainBackjoint.enableLimit = true;
-		mainBackjoint.upperAngle = -0.5f;
+		mainBackjoint.upperAngle = 0.f;
 		mainBackjoint.localAnchorA.Set(0.0f,1.75f) ;
 		mainBackjoint.localAnchorB.Set(0.0f,0.0f);
 		mainBackjoint.collideConnected = false;
@@ -283,7 +286,7 @@ namespace cs296
 		b2FixtureDef backPart2fd;
 		backPart2fd.shape = &backPart2shape;
 		backPart2fd.density = 2700.0f;
-		backPart2fd.friction = 0.5f;
+		backPart2fd.friction = 0.0f;
 		backPart2fd.restitution = 0.0f;
 		b2BodyDef backPart2bd;
 		backPart2bd.type = b2_dynamicBody;
@@ -310,7 +313,7 @@ namespace cs296
 		b2FixtureDef backPart1fd;
 		backPart1fd.shape = &backPart1shape;
 		backPart1fd.density = 2700.0f;
-		backPart1fd.friction = 0.5f;
+		backPart1fd.friction = 0.0f;
 		backPart1fd.restitution = 0.0f;
 		b2BodyDef backPart1bd;
 		backPart1bd.type = b2_dynamicBody;
@@ -375,7 +378,7 @@ namespace cs296
 		frontPartUpperForkfd.density = 2700.0f;
 		frontPartUpperForkfd.filter.categoryBits = 0x0008;
 		frontPartUpperForkfd.filter.maskBits = 0x0010;
-		frontPartUpperForkfd.friction = 0.5f;
+		frontPartUpperForkfd.friction = 0.0f;
 		frontPartUpperForkfd.restitution = 0.0f;
 		b2BodyDef frontPartUpperForkbd;
 		frontPartUpperForkbd.type = b2_dynamicBody;
@@ -389,6 +392,9 @@ namespace cs296
         frontUpperForkjoint.localAnchorA.Set(0,0);
         frontUpperForkjoint.localAnchorB.Set(-1.0f,0.75f);
         frontUpperForkjoint.collideConnected = false;	
+        frontUpperForkjoint.enableLimit = true;
+		frontUpperForkjoint.upperAngle = 0.8f;
+		frontUpperForkjoint.lowerAngle = -0.8f;
         m_world->CreateJoint(&frontUpperForkjoint);
         //Front frame part 3
 		b2Vec2 frontPart3vertices[4];
@@ -403,7 +409,7 @@ namespace cs296
 		frontPart3fd.shape = &frontPart3shape;
 		frontPart3fd.density = 2700.0f;
 		frontPart3fd.filter.categoryBits = 0x0008;
-		frontPart3fd.friction = 0.5f;
+		frontPart3fd.friction = 0.0f;
 		frontPart3fd.restitution = 0.0f;
 		b2BodyDef frontPart3bd;
 		frontPart3bd.type = b2_dynamicBody;
@@ -432,7 +438,7 @@ namespace cs296
 		frontPartLowerForkfd.density = 2700.0f;
 		frontPartLowerForkfd.filter.categoryBits = 0x0010;
 		frontPartLowerForkfd.filter.maskBits = 0x0008;
-		frontPartLowerForkfd.friction = 0.5f;
+		frontPartLowerForkfd.friction = 0.0f;
 		frontPartLowerForkfd.restitution = 0.0f;
 		b2BodyDef frontPartLowerForkbd;
 		frontPartLowerForkbd.type = b2_dynamicBody;
@@ -467,7 +473,7 @@ namespace cs296
 		b2FixtureDef frontPart2fd;
 		frontPart2fd.shape = &frontPart2shape;
 		frontPart2fd.density = 2700.0f;
-		frontPart2fd.friction = 0.5f;
+		frontPart2fd.friction = 0.0f;
 		frontPart2fd.restitution = 0.0f;
 		b2BodyDef frontPart2bd;
 		frontPart2bd.type = b2_dynamicBody;
@@ -534,7 +540,7 @@ namespace cs296
 	}
     {   
       b2BodyDef *bd = new b2BodyDef;
-      bd->position.Set(45,4);
+      bd->position.Set(90,4);
       bd->fixedRotation = true;
       
       //~ 
@@ -552,7 +558,7 @@ namespace cs296
       fd1->restitution = 0.5f;
       fd1->shape = new b2PolygonShape;
       b2PolygonShape bs1;
-      bs1.SetAsBox(15,4);
+      bs1.SetAsBox(60,4);
       fd1->shape = &bs1;
        
       b2Body* box1 = m_world->CreateBody(bd);
