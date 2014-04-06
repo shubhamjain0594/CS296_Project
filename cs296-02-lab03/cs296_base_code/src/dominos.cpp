@@ -39,51 +39,8 @@ using namespace std;
 
 namespace cs296
 {
-  /**  This is the constructor 
-   * This is the documentation block for the constructor.
-   */ 
-/*! \par
-*b2BodyDef bd defines the body. <br>
-*m_world is the physics world creates in Box2D.<br>
-*CreateFixture is used to fix a body to a parent body and hence many of its properties become local to the parent body.<br>
-*CreateBody creates a new body in the m_world.<br>
-*/
-	b2Body* sbody; //left tyre of central part
-	b2Body* sbody2; //right tyre of central part
-	b2Body* spherebody; //rightmost tyre
-	b2Body* spherebody1; //leftmost tyre
-	b2RevoluteJointDef jointDefs5; // right rod right tyre centre
-	b2RevoluteJointDef jointDefs6; // left rod left tyre centre
-	b2RevoluteJointDef jointDef3; //back tyre and L3
-	b2RevoluteJointDef jointDef; //front tyre and L1
-	
-	void dominos_t::keyboard(unsigned char key)
+ 	void dominos_t::keyboard(unsigned char key)
 	{
-    
-    switch (key)
-    {
-      
-    //! Press 'd' to move forward.
-    case 'd':
-    spherebody1->ApplyTorque(50.f, false);
-	//~ spherebody1->ApplyLinearImpulse(b2Vec2(50,0), spherebody1->GetWorldCenter(), false);
-	//~ spherebody->ApplyLinearImpulse(b2Vec2(50,0), spherebody->GetWorldCenter(), false);
-	//~ sbody2->ApplyLinearImpulse(b2Vec2(50,0), sbody2->GetWorldCenter(), false);
-	//~ sbody->ApplyLinearImpulse(b2Vec2(50,0), sbody->GetWorldCenter(), false);
-	//spherebody1->ApplyLinearImpulse(b2Vec2(50,0), spherebody1->GetWorldCenter(), false);
-    break;
-      
-    //! Press 'a' to move backward.
-    case 'a':
-	//~ spherebody1->ApplyLinearImpulse(b2Vec2(-50,0), spherebody1->GetWorldCenter(), false);
-	//~ spherebody->ApplyLinearImpulse(b2Vec2(-50,0), spherebody->GetWorldCenter(), false);
-	//~ sbody2->ApplyLinearImpulse(b2Vec2(-50,0), sbody2->GetWorldCenter(), false);
-	//~ sbody->ApplyLinearImpulse(b2Vec2(-50,0), sbody->GetWorldCenter(), false);
-    //~ spherebody1->ApplyForce(b2Vec2(-50.f,0), spherebody1->GetWorldCenter(), true);
-    //spherebody1->ApplyForce( b2Vec2(-50,0), spherebody1->GetWorldCenter() );
-      break;
-	
-	}
 	}	
 
   dominos_t::dominos_t()
@@ -105,637 +62,479 @@ namespace cs296
       b1 = m_world->CreateBody(&bd);
       b1->CreateFixture(&shape, 0.0f);
     }
-    //~ {
-		
-          
-    //~ {
-	//~ /*! \par Block 2: Top Horizontal Shelf
-	 //~ * Polygon is used to represent shelf. <br>
-	 //~ * Height and width of Polygon are set as 0.5 units and 12 units respectively. <br>
-	 //~ * A body bd is defined and position of center of body is set in x-y coordinates by bd.position.set . <br>
-	 //~ * Polygon is bound to body to create the shelf using CreateFixture command. <br>         
-	 //~ */
-      //~ b2PolygonShape shape; 
-      //~ shape.SetAsBox(6.0f, 0.25f); 
-	//~ 
-      //~ b2BodyDef bd;
-      //~ bd.position.Set(-31.0f, 30.0f);  
-      //~ b2Body* ground = m_world->CreateBody(&bd);
-      //~ ground->CreateFixture(&shape, 0.0f); 
-    //~ }
-
-    
-    //~ {
-	//~ /*! \par Block 3: Dominos 
-	 //~ * Shape of dominos is set to be of that of polygon <br>
-	 //~ * Height and width of Polygon are set as 0.1 units and 1.0 units respectively by SetAsBox. <br>
-	 //~ * 10 dominos are defined with the help of a for loop and each dominos' x-y co-ordinates are set in for loop. <br>
-	 //~ * The density of each dominos is set to 20 units by fd.density ad friction is set to 0.1 units by fd.friction. <br>       
-	 //~ * A fixture definition is created by b2FixtureDef fd. 
-	 //~ */
-      //~ b2PolygonShape shape;
-      //~ shape.SetAsBox(0.1f, 1.0f);
-	//~ 
-      //~ b2FixtureDef fd;
-      //~ fd.shape = &shape;
-      //~ fd.density = 20.0f;
-      //~ fd.friction = 0.1f;
-	//~ 
-	//~ /*! \par
-	//~ * 10 bodies are defined named bd. <br>
-	//~ * All the bodies' type is set to dynamicBody. <br>
-	//~ * Each dominos is bound to the body.
-	//~ */
-	//~ 
-      //~ for (int i = 0; i < 10; ++i)
-	//~ {
-	  //~ b2BodyDef bd;
-	  //~ bd.type = b2_dynamicBody;
-	  //~ bd.position.Set(-35.5f + 1.0f * i, 31.25f);
-	  //~ b2Body* body = m_world->CreateBody(&bd);
-	  //~ body->CreateFixture(&fd);
-	//~ }
-    //~ }
-      //~ 
-    //~ 
-    //~ {
-	//~ /*! \par Block 4:Another Horizontal Shelf
-	//~ * The shape of the shelp is set to a polygon by b2PolygonShape shape. <br>
-	//~ * Its position is set to x=1.0 unit and y=6.0 unit.<br>
-	//~ * It is fixed to ground using CreateFixture method.
-	//~ */
-      //~ b2PolygonShape shape;
-      //~ shape.SetAsBox(7.0f, 0.25f, b2Vec2(-20.f,20.f), 0.0f);
-	//~ 
-      //~ b2BodyDef bd;
-      //~ bd.position.Set(1.0f, 6.0f);
-      //~ b2Body* ground = m_world->CreateBody(&bd);
-      //~ ground->CreateFixture(&shape, 0.0f);
-    //~ }
-//~ 
-//~ 
-    //~ 
-    //~ {
-	//~ /*! \par Block 5:The pendulum that knocks the dominos off
-	//~ */	
-      //~ b2Body* b2;
-      //~ {	
-	//~ /*! \par
-	 //~ * Variable:shape :: Type:Polygonshape :: Value:height=0.25 and width=1.5 units  <br>
-	 //~ * Variable:bd :: Type:BodyDef :: Action:Pendulum bob is attached to it :: Value: position x=-36.5, y=28.0 <br>
-	 //~ */
-	//~ b2PolygonShape shape;
-	//~ shape.SetAsBox(0.25f, 1.5f);  
-	  //~ 
-	//~ b2BodyDef bd;
-	//~ bd.position.Set(-36.5f, 28.0f);
-	//~ b2 = m_world->CreateBody(&bd);
-	//~ b2->CreateFixture(&shape, 10.0f);
-      //~ }
-	//~ 
-      //~ b2Body* b4;
-      //~ {
-		  //~ /*! \par
-		   //~ * Variable:shape :: Type:PolygonShape :: Value:height=0.25 and width=0.25 units.  <br>
-		   //~ * Variable:bd :: Type:BodyDef dynamic_body :: Value:position x=-40.0,y=33.0 :: Action:Acts as a bob. <br>
-		   //~ * Variable:jd :: Type:RevoluteJointDef :: Value:position x=-37 and y40 units :: Action:Connecting fixture and bob.
-		   //~ */   
-	//~ b2PolygonShape shape; 
-	//~ shape.SetAsBox(0.25f, 0.25f);
-	  //~ 
-	//~ b2BodyDef bd;
-	//~ bd.type = b2_dynamicBody;
-	//~ bd.position.Set(-40.0f, 33.0f);
-	//~ b4 = m_world->CreateBody(&bd);
-	//~ b4->CreateFixture(&shape, 2.0f);
-      //~ }
-	//~ 
-      //~ b2RevoluteJointDef jd;
-      //~ b2Vec2 anchor;
-      //~ anchor.Set(-37.0f, 40.0f);
-      //~ jd.Initialize(b2, b4, anchor);
-      //~ m_world->CreateJoint(&jd);
-    //~ }
-      //~ 
-    //~ 
     {
-		/*! \par Block 6:The train of small spheres
-		   * Variable:spherebody :: Type:circle :: Value:radius=0.5  <br>
-		   * Variable:ballfd :: Type:FixtureDef :: Value:density=1,friction=0,restitution=0 <br>
-		   * Variable:ballbd :: number:10 :: Type:dynamicBody :: Value:position x=-22.2+ i and y=26.6 units :: Action:To move after hit by dominos. <br>
-		   * 
-		   */
-		
-		//Horizontal top rod
-      b2PolygonShape shape;
-      shape.SetAsBox(6.0f, 0.5f);
-      b2BodyDef bd;
-      bd.position.Set(0.0f, 13.5f);
-      bd.type = b2_dynamicBody;
-      b2Body* body = m_world->CreateBody(&bd);
-      b2FixtureDef fd;
-      fd.filter.groupIndex = -1;
-      fd.filter.categoryBits = 0x0002;
-      fd.filter.maskBits = 0x0004;
-      fd.density = 1.f;
-      fd.shape = &shape;
-      body->CreateFixture(&fd);
-     // Left hand side vertical rod 
-      b2PolygonShape shape2;
-      int32 count = 4;
-      b2Vec2 ver[4];
-      ver[2].Set(0.5f, 6.0f);
-      ver[1].Set(0.5f, -6.5f);
-      ver[0].Set(-0.5f, -6.5f);
-      ver[3].Set(-0.5f, 6.0f);
-      shape2.Set(ver, count);
-      b2BodyDef bd2;
-      bd2.position.Set(-5.5f, 8.0f);
-      bd2.type = b2_dynamicBody;
-      b2Body* body2 = m_world->CreateBody(&bd2);
-      b2FixtureDef fd2;
-      fd2.filter.groupIndex = -1;
-      fd2.filter.categoryBits = 0x0002;
-      fd2.filter.maskBits = 0x0004;
-      fd2.density = 1.f;
-      fd2.shape = &shape2;
-      body2->CreateFixture(&fd2);
-     //Right hand side vertical rod  
-      b2BodyDef bd3;
-      bd3.position.Set(5.5f, 8.0f);
-      bd3.type = b2_dynamicBody;
-      b2Body* body3 = m_world->CreateBody(&bd3);
-      body3->CreateFixture(&fd2);
-     // Lower horizontal rod 
-      b2BodyDef bd4;
-      bd4.position.Set(0.0f, 10.5f);
-      bd4.type = b2_dynamicBody;
-      b2Body* body4 = m_world->CreateBody(&bd4);
-      body4->CreateFixture(&fd);
-     //Joint for top rod and left rod
-      b2RevoluteJointDef jointDefs;
-      b2Vec2 v1(-5.5f,13.5f);
-      jointDefs.Initialize(body,body2,v1);
-      jointDefs.localAnchorA.Set(-5.5f,0.0f) ;
-      jointDefs.localAnchorB.Set(0.0f,5.5f);
-      jointDefs.collideConnected = false;
-      m_world->CreateJoint(&jointDefs);		
-      //Joint for top rod and right rod
-      b2RevoluteJointDef jointDefs2;
-      b2Vec2 v2(5.5f,13.5f);
-      jointDefs2.Initialize(body,body3,v2);
-      jointDefs2.localAnchorA.Set(5.5f,0.0f) ;
-      jointDefs2.localAnchorB.Set(0.0f,5.5f);
-      jointDefs2.collideConnected = false;
-      m_world->CreateJoint(&jointDefs2);		
-      //joint for bottom rod and left rod
-      b2RevoluteJointDef jointDefs3;
-      b2Vec2 v3(-5.5f,10.5f);
-      jointDefs3.Initialize(body4,body2,v3);
-      jointDefs3.localAnchorA.Set(-5.5f,0.0f) ;
-      jointDefs3.localAnchorB.Set(0.0f,2.5f);
-      jointDefs3.collideConnected = false;
-      m_world->CreateJoint(&jointDefs3);		
-      //joint for bottom rod and right rod
-      b2RevoluteJointDef jointDefs4;
-      b2Vec2 v4(5.5f,10.5f);
-      jointDefs4.Initialize(body4,body3,v4);
-      jointDefs4.localAnchorA.Set(5.5f,0.0f) ;
-      jointDefs4.localAnchorB.Set(0.0f,2.5f);
-      jointDefs4.collideConnected = false;
-      m_world->CreateJoint(&jointDefs4);	
-      //left tyre
-      
-      b2CircleShape circle;
-      circle.m_radius = 2.0f;
-      b2FixtureDef ballfds;
-      ballfds.shape = &circle;
-      ballfds.density = 1.0f;
-      ballfds.friction = 0.5f;
-      ballfds.restitution = 0.5f;
-      b2BodyDef ballbds;
-      ballbds.type = b2_dynamicBody;
-      ballbds.position.Set(-5.5f, 2.0f);
-      sbody = m_world->CreateBody(&ballbds);
-      sbody->CreateFixture(&ballfds);	
-      //right tyre
-      b2BodyDef ballbd2;
-      ballbd2.type = b2_dynamicBody;
-      ballbd2.position.Set(5.5f, 2.0f);
-      sbody2 = m_world->CreateBody(&ballbd2);
-      sbody2->CreateFixture(&ballfds);
-	
-      //Joint joining right rod and right tyre
-      
-      jointDefs5.Initialize(sbody2,body3,sbody2->GetWorldCenter());
-      jointDefs5.localAnchorB.Set(0.0f,-6.0f);
-      jointDefs5.collideConnected = false;
-      m_world->CreateJoint(&jointDefs5);	
-      jointDefs5.enableMotor = true;
-      jointDefs5.maxMotorTorque = 200000.0f;
-      jointDefs5.motorSpeed = 36.0f;
-      //Joint joining left rod and left tyre
-   
-      jointDefs6.Initialize(sbody,body2,sbody->GetWorldCenter());
-      jointDefs6.localAnchorB.Set(0.0f,-6.0f);
-      jointDefs6.collideConnected = false;
-      m_world->CreateJoint(&jointDefs6);
-      //var revJoint:b2RevoluteJoint = world.CreateJoint(def) as b2RevoluteJoint;	
-      jointDefs6.enableMotor = true;
-      jointDefs6.maxMotorTorque = 20000.0f;
-      jointDefs6.motorSpeed = 36.0f;
-		
-		//palash
-		//front part
-		
+		//Center Horizontal top rod
+		b2PolygonShape centerTopShape;
+		centerTopShape.SetAsBox(7.0f, 1.f);
+		b2BodyDef centerTopbd;
+		centerTopbd.position.Set(0.0f, 15.f);
+		centerTopbd.type = b2_dynamicBody;
+		b2Body* centerTop = m_world->CreateBody(&centerTopbd);
+		b2FixtureDef centerTopfd;
+		centerTopfd.filter.categoryBits = 0x0002;
+		centerTopfd.density = 2700.0f;
+		centerTopfd.shape = &centerTopShape;
+		centerTop->CreateFixture(&centerTopfd);
+		//Center Horizontal bottom rod
+		b2BodyDef centerBottombd;
+		centerBottombd.position.Set(0.0f, 11.f);
+		centerBottombd.type = b2_dynamicBody;
+		b2Body* centerBottom = m_world->CreateBody(&centerBottombd);
+		centerBottom->CreateFixture(&centerTopfd);
+		//Center vertical left rod
+		b2PolygonShape centerLeftShape;
+		int32 count = 4;
+		b2Vec2 ver[4];
+		ver[2].Set(1.f, 6.0f);
+		ver[1].Set(1.f, -7.0f);
+		ver[0].Set(-1.f, -7.0f);
+		ver[3].Set(-1.f, 6.0f);
+		centerLeftShape.Set(ver, count);
+		b2BodyDef centerLeftbd;
+		centerLeftbd.position.Set(-6.0f, 10.0f);
+		centerLeftbd.type = b2_dynamicBody;
+		b2Body* centerLeft = m_world->CreateBody(&centerLeftbd);
+		b2FixtureDef centerLeftfd;
+		centerLeftfd.filter.categoryBits = 0x0002;
+		centerLeftfd.density = 2700.0f;
+		centerLeftfd.shape = &centerLeftShape;
+		centerLeft->CreateFixture(&centerLeftfd);
+		//Center Vertical Right rod
+		b2BodyDef centerRightbd;
+		centerRightbd.position.Set(6.0f, 10.0f);
+		centerRightbd.type = b2_dynamicBody;
+		b2Body* centerRight = m_world->CreateBody(&centerRightbd);
+		centerRight->CreateFixture(&centerLeftfd);
+		//Joint between center left and center top  rod
+		b2RevoluteJointDef centerLeftTopJoint;
+        b2Vec2 centerLeftTopJointv1(-6.0f,15.0f);
+        centerLeftTopJoint.Initialize(centerTop,centerLeft,centerLeftTopJointv1);
+        centerLeftTopJoint.localAnchorA.Set(-6.0f,0.0f) ;
+        centerLeftTopJoint.localAnchorB.Set(0.0f,5.0f);
+        centerLeftTopJoint.collideConnected = false;
+        m_world->CreateJoint(&centerLeftTopJoint);	
+        //Joint between center right and center top  rod
+		b2RevoluteJointDef centerRightTopJoint;
+        b2Vec2 centerRightTopJointv1(6.0f,15.0f);
+        centerRightTopJoint.Initialize(centerTop,centerRight,centerRightTopJointv1);
+        centerRightTopJoint.localAnchorA.Set(6.0f,0.0f) ;
+        centerRightTopJoint.localAnchorB.Set(0.0f,5.0f);
+        centerRightTopJoint.collideConnected = false;
+        m_world->CreateJoint(&centerRightTopJoint);	
+        //Joint between center left and center bottom  rod
+		b2RevoluteJointDef centerLeftBottomJoint;
+        b2Vec2 centerLeftBottomJointv1(-6.0f,11.0f);
+        centerLeftBottomJoint.Initialize(centerBottom,centerLeft,centerLeftBottomJointv1);
+        centerLeftBottomJoint.localAnchorA.Set(-6.0f,0.0f) ;
+        centerLeftBottomJoint.localAnchorB.Set(0.0f,1.0f);
+        centerLeftBottomJoint.collideConnected = false;
+        m_world->CreateJoint(&centerLeftBottomJoint);	
+        //Joint between center right and center top  rod
+		b2RevoluteJointDef centerRightBottomJoint;
+        b2Vec2 centerRightBottomJointv1(6.0f,11.0f);
+        centerRightBottomJoint.Initialize(centerBottom,centerRight,centerRightBottomJointv1);
+        centerRightBottomJoint.localAnchorA.Set(6.0f,0.0f) ;
+        centerRightBottomJoint.localAnchorB.Set(0.0f,1.0f);
+        centerRightBottomJoint.collideConnected = false;
+        m_world->CreateJoint(&centerRightBottomJoint);	
+        //Center left tyre 
+        b2CircleShape centerLeftcircle;
+        centerLeftcircle.m_radius = 3.5f;
+        b2FixtureDef centerLeftTirefd;
+        centerLeftTirefd.shape = &centerLeftcircle;
+        centerLeftTirefd.density = 1600.0f;
+        centerLeftTirefd.friction = 0.5f;
+        centerLeftTirefd.restitution = 0.5f;
+        b2BodyDef centerLeftTirebd;
+        centerLeftTirebd.type = b2_dynamicBody;
+        centerLeftTirebd.position.Set(-6.0f, 3.5f);
+        b2Body* centerLeftTire = m_world->CreateBody(&centerLeftTirebd);
+        centerLeftTire->CreateFixture(&centerLeftTirefd);	
+        //Center right tyre
+        b2BodyDef centerRightTirebd;
+        centerRightTirebd.type = b2_dynamicBody;
+        centerRightTirebd.position.Set(6.0f, 3.5f);
+        b2Body* centerRightTire = m_world->CreateBody(&centerRightTirebd);
+        centerRightTire->CreateFixture(&centerLeftTirefd);	
+        //Joint between center left tire and center left rod
+        b2RevoluteJointDef centerLeftTirejoint;
+        centerLeftTirejoint.Initialize(centerLeftTire,centerLeft,centerLeftTire->GetWorldCenter());
+        centerLeftTirejoint.localAnchorB.Set(0.0f,-6.5f);
+        centerLeftTirejoint.collideConnected = false;
+        centerLeftTirejoint.enableMotor = true;
+        centerLeftTirejoint.maxMotorTorque = 20000000.0f;
+        centerLeftTirejoint.motorSpeed = 10.0f;
+        m_world->CreateJoint(&centerLeftTirejoint);	
+        //Joint between center right tire and center right rod
+        b2RevoluteJointDef centerRightTirejoint;
+        centerRightTirejoint.Initialize(centerRightTire,centerRight,centerRightTire->GetWorldCenter());
+        centerRightTirejoint.localAnchorB.Set(0.0f,-6.5f);
+        centerRightTirejoint.collideConnected = false;	
+        centerRightTirejoint.enableMotor = true;
+        centerRightTirejoint.maxMotorTorque = 20000000.0f;
+        centerRightTirejoint.motorSpeed = 10.0f;
+        m_world->CreateJoint(&centerRightTirejoint);
+        //main frame plate
+		b2PolygonShape mainFramePlate;
+		mainFramePlate.SetAsBox(10.5f, 0.25f);
+		b2BodyDef mainFramebd;
+		mainFramebd.position.Set(-0.5f, 10.25f);
+		mainFramebd.type = b2_dynamicBody;
+		b2Body* mainFrame = m_world->CreateBody(&mainFramebd);
+		b2FixtureDef mainFramefd;
+		mainFramefd.filter.categoryBits = 0x0008;
+		mainFramefd.filter.maskBits = 0x0010;
+		mainFramefd.density = 2700.f;
+		mainFramefd.shape = &mainFramePlate;
+		mainFrame->CreateFixture(&mainFramefd);
+		//main frame structure for attaching central bogeys
+		b2PolygonShape attachCenterFrameshape;
+		attachCenterFrameshape.SetAsBox(1.5f, 2.75f);
+		b2BodyDef attachCenterFramebd;
+		attachCenterFramebd.position.Set(0.0f, 13.25f);
+		attachCenterFramebd.type = b2_dynamicBody;
+		b2Body* attachCenterFrame = m_world->CreateBody(&attachCenterFramebd);
+		b2FixtureDef attachCenterFramefd;
+		attachCenterFramefd.filter.categoryBits = 0x0008;
+		attachCenterFramefd.filter.maskBits = 0x0010;
+		attachCenterFramefd.density = 2700.f;
+		attachCenterFramefd.shape = &attachCenterFrameshape;
+		attachCenterFrame->CreateFixture(&attachCenterFramefd);
+		//Joint for main frame and center top rod
+        b2RevoluteJointDef mainTopjoint;
+		mainTopjoint.Initialize(attachCenterFrame,centerTop,centerTop->GetWorldCenter());
+		mainTopjoint.localAnchorA.Set(0.0f,1.75f) ;
+		mainTopjoint.localAnchorB.Set(0.0f,0.0f);
+		mainTopjoint.collideConnected = false;
+		m_world->CreateJoint(&mainTopjoint);		
+		//Joint for main frame and bottom rod 
+		b2RevoluteJointDef mainBottomjoint;
+		mainBottomjoint.Initialize(attachCenterFrame,centerBottom,centerBottom->GetWorldCenter());
+		mainBottomjoint.localAnchorA.Set(0.0f,-1.75f) ;
+		mainBottomjoint.localAnchorB.Set(0.0f,0.0f);
+		mainBottomjoint.collideConnected = false;
+		m_world->CreateJoint(&mainBottomjoint);		
+		//Joint for main plate and main frame to attach center frame a weld joint
+		b2WeldJointDef mainFrameCenterJoint;
+		mainFrameCenterJoint.bodyA=attachCenterFrame;
+		mainFrameCenterJoint.bodyB=mainFrame;
+		mainFrameCenterJoint.localAnchorA.Set(0.0f,-2.75f) ;
+		mainFrameCenterJoint.localAnchorB.Set(0.5f,0.25f);
+		mainFrameCenterJoint.collideConnected = false;
+		m_world->CreateJoint(&mainFrameCenterJoint);
+		//Attaching back fork
+		b2PolygonShape backFrameShape;
+		backFrameShape.SetAsBox(1.f, 2.75f);
+		b2BodyDef backFramebd;
+		backFramebd.position.Set(-10.f, 13.25f);
+		backFramebd.type = b2_dynamicBody;
+		b2Body* backFrame = m_world->CreateBody(&backFramebd);
+		b2FixtureDef backFramefd;
+		backFramefd.filter.categoryBits = 0x0008;
+		backFramefd.density = 2700.f;
+		backFramefd.friction = 0.0f;
+		backFramefd.shape = &backFrameShape;
+		backFrame->CreateFixture(&backFramefd);
+		//Joint for main plate and back frame to attach back frame a weld joint
+		b2WeldJointDef mainFrameBackJoint;
+		mainFrameBackJoint.bodyA=backFrame;
+		mainFrameBackJoint.bodyB=mainFrame;
+		mainFrameBackJoint.localAnchorA.Set(0.0f,-2.75f) ;
+		mainFrameBackJoint.localAnchorB.Set(-9.5f,0.25f);
+		mainFrameBackJoint.collideConnected = false;
+		m_world->CreateJoint(&mainFrameBackJoint);
+		//Back frame part 3
+		b2Vec2 backPart3vertices[4];
+		backPart3vertices[2].Set(1.f, 1.f);
+		backPart3vertices[1].Set(1.f, -1.0f);
+		backPart3vertices[0].Set(-5.f, -5.0f);
+		backPart3vertices[3].Set(-5.f, -3.f);
+		b2Body* backPart3;
+		b2PolygonShape backPart3shape;
+		backPart3shape.Set(backPart3vertices, count);
+		b2FixtureDef backPart3fd;
+		backPart3fd.shape = &backPart3shape;
+		backPart3fd.density = 2700.0f;
+		backPart3fd.friction = 0.0f;
+		backPart3fd.restitution = 0.0f;
+		b2BodyDef backPart3bd;
+		backPart3bd.type = b2_dynamicBody;
+		backPart3bd.position.Set(-10.0f, 15.0f);
+		backPart3 = m_world->CreateBody(&backPart3bd);
+		backPart3->CreateFixture(&backPart3fd);
+		//Joint for backPart3 and backFrame
+        b2RevoluteJointDef mainBackjoint;
+		mainBackjoint.Initialize(backFrame,backPart3,backPart3->GetWorldCenter());
+		mainBackjoint.enableLimit = true;
+		mainBackjoint.upperAngle = -0.5f;
+		mainBackjoint.localAnchorA.Set(0.0f,1.75f) ;
+		mainBackjoint.localAnchorB.Set(0.0f,0.0f);
+		mainBackjoint.collideConnected = false;
+		m_world->CreateJoint(&mainBackjoint);
+		//Back Frame part 2	
+		b2Vec2 backPart2vertices[4];
+		backPart2vertices[2].Set(1.f, 1.f);
+		backPart2vertices[1].Set(1.f, -1.f);
+		backPart2vertices[0].Set(-7.f, -1.f);
+		backPart2vertices[3].Set(-7.f, 1.f);
+		b2Body* backPart2;
+		b2PolygonShape backPart2shape;
+		backPart2shape.Set(backPart2vertices, count);
+		b2FixtureDef backPart2fd;
+		backPart2fd.shape = &backPart2shape;
+		backPart2fd.density = 2700.0f;
+		backPart2fd.friction = 0.5f;
+		backPart2fd.restitution = 0.0f;
+		b2BodyDef backPart2bd;
+		backPart2bd.type = b2_dynamicBody;
+		backPart2bd.position.Set(-14.0f, 11.f);
+		backPart2 = m_world->CreateBody(&backPart2bd);
+		backPart2->CreateFixture(&backPart2fd);
+		//Joint for backPart2 and backPart3 a weld joint
+		b2WeldJointDef Back23Joint;
+		Back23Joint.bodyA=backPart3;
+		Back23Joint.bodyB=backPart2;
+		Back23Joint.localAnchorA.Set(-4.0f,-4.0f) ;
+		Back23Joint.localAnchorB.Set(0.0f,0.0f);
+		Back23Joint.collideConnected = false;
+		m_world->CreateJoint(&Back23Joint);
+		//back frame Part 1
+		b2Vec2 backPart1vertices[4];
+		backPart1vertices[2].Set(1.f, 1.f);
+		backPart1vertices[1].Set(1.f, -8.f);
+		backPart1vertices[0].Set(-1.f, -8.f);
+		backPart1vertices[3].Set(-1.f, 1.f);
+		b2Body* backPart1;
+		b2PolygonShape backPart1shape;
+		backPart1shape.Set(backPart1vertices, count);
+		b2FixtureDef backPart1fd;
+		backPart1fd.shape = &backPart1shape;
+		backPart1fd.density = 2700.0f;
+		backPart1fd.friction = 0.5f;
+		backPart1fd.restitution = 0.0f;
+		b2BodyDef backPart1bd;
+		backPart1bd.type = b2_dynamicBody;
+		backPart1bd.position.Set(-20.0f, 11.f);
+		backPart1 = m_world->CreateBody(&backPart1bd);
+		backPart1->CreateFixture(&backPart1fd);
+		//Joint for backPart2 and backPart1 a weld joint
+		b2WeldJointDef Back21Joint;
+		Back21Joint.bodyA=backPart1;
+		Back21Joint.bodyB=backPart2;
+		Back21Joint.localAnchorA.Set(0.0f,0.0f) ;
+		Back21Joint.localAnchorB.Set(-6.0f,0.0f);
+		Back21Joint.collideConnected = false;
+		m_world->CreateJoint(&Back21Joint);
+		//Back tyre
+		b2BodyDef backTirebd;
+        backTirebd.type = b2_dynamicBody;
+        backTirebd.position.Set(-20.0f, 3.5f);
+        b2Body* backTire = m_world->CreateBody(&backTirebd);
+        backTire->CreateFixture(&centerLeftTirefd);	
+		//Joint between back tire and back frame part 1
+        b2RevoluteJointDef backTirejoint;
+        backTirejoint.Initialize(backTire,backPart1,backTire->GetWorldCenter());
+        backTirejoint.localAnchorB.Set(0.0f,-7.5f);
+        backTirejoint.collideConnected = false;	
+        backTirejoint.enableMotor = true;
+        backTirejoint.maxMotorTorque = 20000000.0f;
+        backTirejoint.motorSpeed = 10.0f;
+        m_world->CreateJoint(&backTirejoint);
+        //Box to join front fork and main plate
+        b2PolygonShape frontFrameshape;
+		frontFrameshape.SetAsBox(2.5f, 2.75f);
+		b2BodyDef frontFramebd;
+		frontFramebd.position.Set(7.5f, 13.25f);
+		frontFramebd.type = b2_dynamicBody;
+		b2Body* frontFrame = m_world->CreateBody(&frontFramebd);
+		b2FixtureDef frontFramefd;
+		frontFramefd.filter.categoryBits = 0x0008;
+		frontFramefd.filter.maskBits = 0x0010;
+		frontFramefd.density = 2700.f;
+		frontFramefd.shape = &frontFrameshape;
+		frontFrame->CreateFixture(&frontFramefd);
+		//Joint for main plate and front frame to attach front fork a weld joint
+		b2WeldJointDef mainFrameFrontJoint;
+		mainFrameFrontJoint.bodyA=frontFrame;
+		mainFrameFrontJoint.bodyB=mainFrame;
+		mainFrameFrontJoint.localAnchorA.Set(0.0f,-2.75f) ;
+		mainFrameFrontJoint.localAnchorB.Set(8.f,0.25f);
+		mainFrameFrontJoint.collideConnected = false;
+		m_world->CreateJoint(&mainFrameFrontJoint);
+		//Front frame upper fork
+		b2Vec2 frontPartUpperForkvertices[4];
+		frontPartUpperForkvertices[2].Set(-1.f, 1.f);
+		frontPartUpperForkvertices[1].Set(-1.f, -1.0f);
+		frontPartUpperForkvertices[0].Set(7.f, 6.5f);
+		frontPartUpperForkvertices[3].Set(7.f, 8.5f);
+		b2Body* frontPartUpperFork;
+		b2PolygonShape frontPartUpperForkshape;
+		frontPartUpperForkshape.Set(frontPartUpperForkvertices, count);
+		b2FixtureDef frontPartUpperForkfd;
+		frontPartUpperForkfd.shape = &frontPartUpperForkshape;
+		frontPartUpperForkfd.density = 2700.0f;
+		frontPartUpperForkfd.filter.categoryBits = 0x0008;
+		frontPartUpperForkfd.filter.maskBits = 0x0010;
+		frontPartUpperForkfd.friction = 0.5f;
+		frontPartUpperForkfd.restitution = 0.0f;
+		b2BodyDef frontPartUpperForkbd;
+		frontPartUpperForkbd.type = b2_dynamicBody;
+		frontPartUpperForkbd.position.Set(6.5f, 14.0f);
+		frontPartUpperFork = m_world->CreateBody(&frontPartUpperForkbd);
+		frontPartUpperFork->CreateFixture(&frontPartUpperForkfd);
+		//Joint between front upper fork and front plate
+        b2RevoluteJointDef frontUpperForkjoint;
+        frontUpperForkjoint.bodyA=frontPartUpperFork,
+        frontUpperForkjoint.bodyB=frontFrame;
+        frontUpperForkjoint.localAnchorA.Set(0,0);
+        frontUpperForkjoint.localAnchorB.Set(-1.0f,0.75f);
+        frontUpperForkjoint.collideConnected = false;	
+        m_world->CreateJoint(&frontUpperForkjoint);
+        //Front frame part 3
+		b2Vec2 frontPart3vertices[4];
+		frontPart3vertices[2].Set(-1.f, 1.f);
+		frontPart3vertices[1].Set(1.f, 1.0f);
+		frontPart3vertices[0].Set(8.f, -13.f);
+		frontPart3vertices[3].Set(6.f, -13.f);
+		b2Body* frontPart3;
+		b2PolygonShape frontPart3shape;
+		frontPart3shape.Set(frontPart3vertices, count);
+		b2FixtureDef frontPart3fd;
+		frontPart3fd.shape = &frontPart3shape;
+		frontPart3fd.density = 2700.0f;
+		frontPart3fd.filter.categoryBits = 0x0008;
+		frontPart3fd.friction = 0.5f;
+		frontPart3fd.restitution = 0.0f;
+		b2BodyDef frontPart3bd;
+		frontPart3bd.type = b2_dynamicBody;
+		frontPart3bd.position.Set(12.5f, 21.5f);
+		frontPart3 = m_world->CreateBody(&frontPart3bd);
+		frontPart3->CreateFixture(&frontPart3fd);
+		//Joint between front upper fork and front frame part 3
+        b2RevoluteJointDef frontUpperForkPart3joint;
+        frontUpperForkPart3joint.bodyA=frontPartUpperFork,
+        frontUpperForkPart3joint.bodyB=frontPart3;
+        frontUpperForkPart3joint.localAnchorA.Set(6.f,7.f);
+        frontUpperForkPart3joint.localAnchorB.Set(0.0f,0.f);
+        frontUpperForkPart3joint.collideConnected = false;	
+        m_world->CreateJoint(&frontUpperForkPart3joint);
+        //Front frame lower fork
+		b2Vec2 frontPartLowerForkvertices[4];
+		frontPartLowerForkvertices[2].Set(-1.f, 1.f);
+		frontPartLowerForkvertices[1].Set(-1.f, 0.0f);
+		frontPartLowerForkvertices[0].Set(6.5f, 4.5f);
+		frontPartLowerForkvertices[3].Set(6.5f, 6.5f);
+		b2Body* frontPartLowerFork;
+		b2PolygonShape frontPartLowerForkshape;
+		frontPartLowerForkshape.Set(frontPartLowerForkvertices, count);
+		b2FixtureDef frontPartLowerForkfd;
+		frontPartLowerForkfd.shape = &frontPartLowerForkshape;
+		frontPartLowerForkfd.density = 2700.0f;
+		frontPartLowerForkfd.filter.categoryBits = 0x0010;
+		frontPartLowerForkfd.filter.maskBits = 0x0008;
+		frontPartLowerForkfd.friction = 0.5f;
+		frontPartLowerForkfd.restitution = 0.0f;
+		b2BodyDef frontPartLowerForkbd;
+		frontPartLowerForkbd.type = b2_dynamicBody;
+		frontPartLowerForkbd.position.Set(9.0f, 12.0f);
+		frontPartLowerFork = m_world->CreateBody(&frontPartLowerForkbd);
+		frontPartLowerFork->CreateFixture(&frontPartLowerForkfd);
+		//Joint between front lower fork and front plate
+        b2RevoluteJointDef frontLowerForkjoint;
+        frontLowerForkjoint.bodyA=frontPartLowerFork,
+        frontLowerForkjoint.bodyB=frontFrame;
+        frontLowerForkjoint.localAnchorA.Set(0,0);
+        frontLowerForkjoint.localAnchorB.Set(1.5f,-0.75f);
+        frontLowerForkjoint.collideConnected = false;	
+        m_world->CreateJoint(&frontLowerForkjoint);
+        //Joint between front upper fork and front frame part 3
+        b2RevoluteJointDef frontLowerForkPart3joint;
+        frontLowerForkPart3joint.bodyA=frontPartLowerFork,
+        frontLowerForkPart3joint.bodyB=frontPart3;
+        frontLowerForkPart3joint.localAnchorA.Set(5.5f,5.f);
+        frontLowerForkPart3joint.localAnchorB.Set(2.0f,-4.5f);
+        frontLowerForkPart3joint.collideConnected = false;	
+        m_world->CreateJoint(&frontLowerForkPart3joint);
+        //front frame part 2 
+        b2Vec2 frontPart2vertices[4];
+		frontPart2vertices[2].Set(-1.f, 1.f);
+		frontPart2vertices[1].Set(-1.f, -1.f);
+		frontPart2vertices[0].Set(3.5f, -1.f);
+		frontPart2vertices[3].Set(3.5f, 1.f);
+		b2Body* frontPart2;
+		b2PolygonShape frontPart2shape;
+		frontPart2shape.Set(frontPart2vertices, count);
+		b2FixtureDef frontPart2fd;
+		frontPart2fd.shape = &frontPart2shape;
+		frontPart2fd.density = 2700.0f;
+		frontPart2fd.friction = 0.5f;
+		frontPart2fd.restitution = 0.0f;
+		b2BodyDef frontPart2bd;
+		frontPart2bd.type = b2_dynamicBody;
+		frontPart2bd.position.Set(19.5f, 9.5f);
+		frontPart2 = m_world->CreateBody(&frontPart2bd);
+		frontPart2->CreateFixture(&frontPart2fd);
+		//Joining front part 2 and front part 3
+		b2WeldJointDef front23Joint;
+		front23Joint.bodyA=frontPart3;
+		front23Joint.bodyB=frontPart2;
+		front23Joint.localAnchorA.Set(7.0f,-12.0f) ;
+		front23Joint.localAnchorB.Set(0.0f,0.0f);
+		front23Joint.collideConnected = false;
+		m_world->CreateJoint(&front23Joint);
+		//front frame part 1
+		b2Vec2 frontPart1vertices[4];
+		frontPart1vertices[2].Set(1.f, 1.f);
+		frontPart1vertices[1].Set(1.f, -6.5f);
+		frontPart1vertices[0].Set(-1.f, -6.5f);
+		frontPart1vertices[3].Set(-1.f, 1.f);
+		b2Body* frontPart1;
+		b2PolygonShape frontPart1shape;
+		frontPart1shape.Set(frontPart1vertices, count);
+		b2FixtureDef frontPart1fd;
+		frontPart1fd.shape = &frontPart1shape;
+		frontPart1fd.density = 2700.0f;
+		frontPart1fd.friction = 0.5f;
+		frontPart1fd.restitution = 0.0f;
+		b2BodyDef frontPart1bd;
+		frontPart1bd.type = b2_dynamicBody;
+		frontPart1bd.position.Set(22.0f, 9.5f);
+		frontPart1 = m_world->CreateBody(&frontPart1bd);
+		frontPart1->CreateFixture(&frontPart1fd);
+		//Joining front part 2 and front part 1
+		b2WeldJointDef front21Joint;
+		front21Joint.bodyA=frontPart1;
+		front21Joint.bodyB=frontPart2;
+		front21Joint.localAnchorA.Set(0.0f,0.0f) ;
+		front21Joint.localAnchorB.Set(2.5f,0.0f);
+		front21Joint.collideConnected = false;
+		m_world->CreateJoint(&front21Joint);
 		//front tyre
-		
-		b2BodyDef ballbd;
-		ballbd.type = b2_dynamicBody;
-		ballbd.position.Set(19.5f, 2.0f);
-		spherebody = m_world->CreateBody(&ballbd);
-		spherebody->CreateFixture(&ballfds);
-		
+		b2BodyDef frontTirebd;
+        frontTirebd.type = b2_dynamicBody;
+        frontTirebd.position.Set(22.0f, 3.5f);
+        b2Body* frontTire = m_world->CreateBody(&frontTirebd);
+        frontTire->CreateFixture(&centerLeftTirefd);	
+		//Joint between front tire and front frame part 1
+        b2RevoluteJointDef frontTirejoint;
+        frontTirejoint.Initialize(frontTire,frontPart1,frontTire->GetWorldCenter());
+        frontTirejoint.localAnchorB.Set(0.0f,-6.0f);
+        frontTirejoint.collideConnected = false;	
+        frontTirejoint.enableMotor = true;
+        frontTirejoint.maxMotorTorque = 20000000.0f;
+        frontTirejoint.motorSpeed = 10.0f;
+        m_world->CreateJoint(&frontTirejoint);
 
-		//L1
-		count = 4;
-		b2Vec2 vertices[4];
-		vertices[2].Set(0.5f, 0.5f);
-		vertices[1].Set(0.5f, -6.5f);
-		vertices[0].Set(-0.5f, -6.5f);
-		vertices[3].Set(-0.5f, 0.5f);
-		b2Body* L1;
-		b2PolygonShape l1shape;
-		l1shape.Set(vertices, count);
-		b2FixtureDef l1fd;
-		l1fd.shape = &l1shape;
-		l1fd.density = 1.0f;
-		l1fd.friction = 0.0f;
-		l1fd.restitution = 0.0f;
-		b2BodyDef l1bd;
-		l1bd.type = b2_dynamicBody;
-		l1bd.position.Set(19.5f, 8.0f);
-		L1 = m_world->CreateBody(&l1bd);
-		L1->CreateFixture(&l1fd);
-		
-		//L2
-		b2Vec2 vertices1[4];
-		vertices1[2].Set(0.5f, 0.5f);
-		vertices1[1].Set(0.5f, -0.5f);
-		vertices1[0].Set(-4.5f, -0.5f);
-		vertices1[3].Set(-4.5f, 0.5f);
-		b2Body* L2;
-		b2PolygonShape l2shape;
-		l2shape.Set(vertices1, count);
-		b2FixtureDef l2fd;
-		l2fd.shape = &l2shape;
-		l2fd.density = 1.0f;
-		l2fd.friction = 0.0f;
-		l2fd.restitution = 0.0f;
-		b2BodyDef l2bd;
-		l2bd.type = b2_dynamicBody;
-		l2bd.position.Set(19.5f, 8.0f);
-		L2 = m_world->CreateBody(&l2bd);
-		L2->CreateFixture(&l2fd);
-		
-		//R1
-		b2Vec2 vertices2[4];
-		vertices2[2].Set(-6.0f, 13.0f);
-		vertices2[1].Set(0.5f, -0.5f);
-		vertices2[0].Set(-0.5f,-0.5f);
-		vertices2[3].Set(-7.0f, 13.0f);
-		b2Body* R1;
-		b2PolygonShape r1shape;
-		r1shape.Set(vertices2, count);
-		b2FixtureDef r1fd;
-		r1fd.shape = &r1shape;
-		r1fd.density = 1.0f;
-		r1fd.filter.categoryBits = 0x0002;
-		r1fd.filter.maskBits = 0x0002;
-		r1fd.friction = 0.0f;
-		r1fd.restitution = 0.0f;
-		b2BodyDef r1bd;
-		r1bd.type = b2_dynamicBody;
-		r1bd.position.Set(15.5f, 8.0f);
-		R1 = m_world->CreateBody(&r1bd);
-		R1->CreateFixture(&r1fd);
-		
-		//upper fork connector
-		b2Vec2 vertice3[4];
-		vertice3[2].Set(0.5f, 0.5f);
-		vertice3[1].Set(0.5f, -0.5f);
-		vertice3[0].Set(-11.0f,-0.5f);
-		vertice3[3].Set(-11.0f, 0.5f);
-		b2Body* upperFork;
-		b2PolygonShape upperForkshape;
-		upperForkshape.Set(vertice3, count);
-		b2FixtureDef upperForkfd;
-		upperForkfd.shape = &upperForkshape;
-		upperForkfd.density = 1.0f;
-		upperForkfd.filter.categoryBits = 0x0002;
-		upperForkfd.filter.maskBits = 0x0002;
-		upperForkfd.friction = 0.5f;
-		upperForkfd.restitution = 0.0f;
-		b2BodyDef upperForkbd;
-		upperForkbd.type = b2_dynamicBody;
-		upperForkbd.position.Set(15.5f, 22.5f);
-		upperFork = m_world->CreateBody(&upperForkbd);
-		upperFork->CreateFixture(&upperForkfd);
-		//upper fork connector 2
-		b2Vec2 vertice4[4];
-		vertice4[2].Set(0.5f, 0.5f);
-		vertice4[1].Set(0.5f, -0.5f);
-		vertice4[0].Set(-9.5f,-0.5f);
-		vertice4[3].Set(-9.5f, 0.5f);
-		b2Body* lowerFork;
-		b2PolygonShape lowerForkshape;
-		lowerForkshape.Set(vertice4, count);
-		b2FixtureDef lowerForkfd;
-		lowerForkfd.shape = &lowerForkshape;
-		lowerForkfd.density = 1.0f;
-		lowerForkfd.filter.categoryBits = 0x0002;
-		lowerForkfd.filter.maskBits = 0x0002;
-		lowerForkfd.friction = 0.0f;
-		lowerForkfd.restitution = 0.0f;
-		b2BodyDef lowerForkbd;
-		lowerForkbd.type = b2_dynamicBody;
-		lowerForkbd.position.Set(15.5f, 19.5f);
-		lowerFork = m_world->CreateBody(&lowerForkbd);
-		lowerFork->CreateFixture(&lowerForkfd);
-		
-		//front tyre and L1
-		
-		jointDef.bodyA = spherebody;
-		jointDef.bodyB = L1;
-		jointDef.localAnchorA.Set(0,0);
-		jointDef.localAnchorB.Set(0,-6.0f);
-		jointDef.collideConnected = false;
-		jointDef.enableMotor = true;
-		jointDef.maxMotorTorque = 200000.0f;
-		jointDef.motorSpeed = 36.0f;
-		m_world->CreateJoint(&jointDef);
-		
-		//L1 and L2
-		b2WeldJointDef jointDef1;
-		jointDef1.bodyA = L1;
-		jointDef1.bodyB = L2;
-		jointDef1.localAnchorA.Set(0,0);
-		jointDef1.localAnchorB.Set(0,0);
-		jointDef1.collideConnected = false;
-		m_world->CreateJoint(&jointDef1);
-		
-		//L2 and R1
-		b2WeldJointDef jointDef2;
-		jointDef2.bodyA = L2;
-		jointDef2.bodyB = R1;
-		jointDef2.localAnchorA.Set(-4.0,0);
-		jointDef2.localAnchorB.Set(0, 0);
-		jointDef2.collideConnected = false;
-		m_world->CreateJoint(&jointDef2);
-		//upper fork and R1
-        b2RevoluteJointDef jointDefu3;
-		jointDefu3.bodyA = upperFork;
-		jointDefu3.bodyB = R1;
-		jointDefu3.localAnchorA.Set(0,0);
-		jointDefu3.localAnchorB.Set(-6.5f,12.5f);
-		jointDefu3.collideConnected = false;
-		m_world->CreateJoint(&jointDefu3);
-		//lower fork and R1
-        b2RevoluteJointDef jointDefu4;
-		jointDefu4.bodyA = lowerFork;
-		jointDefu4.bodyB = R1;
-		jointDefu4.localAnchorA.Set(0,0);
-		jointDefu4.localAnchorB.Set(-5,9.5f);
-		jointDefu4.collideConnected = false;
-		m_world->CreateJoint(&jointDefu4);
-		//back part
-		
-		//back tyre
-		b2BodyDef ballbd1;
-		ballbd1.type = b2_dynamicBody;
-		ballbd1.position.Set(-18.5f,2.0f);
-		spherebody1 = m_world->CreateBody(&ballbd1);
-		spherebody1->CreateFixture(&ballfds);
-		
-		//L3
-		b2Vec2 vertices3[4];
-		vertices3[2].Set(0.5f, 0.5f);
-		vertices3[1].Set(0.5f, -8.0f);
-		vertices3[0].Set(-0.5f, -8.0f);
-		vertices3[3].Set(-0.5f, 0.5f);
-		b2Body* L3;
-		b2PolygonShape l3shape;
-		l3shape.Set(vertices3, count);
-		b2FixtureDef l3fd;
-		l3fd.shape = &l3shape;
-		l3fd.density = 1.0f;
-		l3fd.friction = 0.0f;
-		l3fd.restitution = 0.0f;
-		b2BodyDef l3bd;
-		l3bd.type = b2_dynamicBody;
-		l3bd.position.Set(-18.5f, 9.5f);
-		L3 = m_world->CreateBody(&l3bd);
-		L3->CreateFixture(&l3fd);
-		
-		//L3 and back tyre
-		
-		jointDef3.bodyA = spherebody1;
-		jointDef3.bodyB = L3;
-		jointDef3.localAnchorA.Set(0,0);
-		jointDef3.localAnchorB.Set(0, -7.5f);
-		jointDef3.collideConnected = false;
-		jointDef3.enableMotor = true;
-		jointDef3.maxMotorTorque = 200000.0f;
-		jointDef3.motorSpeed = 36.0f;
-		m_world->CreateJoint(&jointDef3);
-		
-		//L4
-		b2Vec2 vertices4[4];
-		vertices4[2].Set(-0.5f, 0.5f);
-		vertices4[1].Set(-0.5f, -0.5f);
-		vertices4[0].Set(6.5f, -0.5f);
-		vertices4[3].Set(6.5f, 0.5f);
-		b2Body* L4;
-		b2PolygonShape l4shape;
-		l4shape.Set(vertices4, count);
-		b2FixtureDef l4fd;
-		l4fd.shape = &l4shape;
-		l4fd.density = 1.0f;
-		l4fd.friction = 0.5f;
-		l4fd.restitution = 0.0f;
-		b2BodyDef l4bd;
-		l4bd.type = b2_dynamicBody;
-		l4bd.position.Set(-19.5f, 9.5f);
-		L4 = m_world->CreateBody(&l4bd);
-		L4->CreateFixture(&l4fd);
-		
-		//L3 and L4
-		b2WeldJointDef jointDef4;
-		jointDef4.bodyA = L3;
-		jointDef4.bodyB = L4;
-		jointDef4.collideConnected = false;
-		m_world->CreateJoint(&jointDef4);
-		
-		//R2
-		b2Vec2 vertices5[4];
-		vertices5[2].Set(0.5f, 5.0f);
-		vertices5[1].Set(0.5f, -0.5f);
-		vertices5[0].Set(-0.5f,-0.5f);
-		vertices5[3].Set(-0.5f, 5.0f);
-		b2Body* R2;
-		b2PolygonShape r2shape;
-		r2shape.Set(vertices5, count);
-		b2FixtureDef r2fd;
-		r2fd.filter.categoryBits = 0x0002;
-		r2fd.shape = &r2shape;
-		r2fd.density = 1.0f;
-		r2fd.friction = 0.0f;
-		r2fd.restitution = 0.0f;
-		b2BodyDef r2bd;
-		r2bd.angle = -0.6;
-		r2bd.type = b2_dynamicBody;
-		r2bd.position.Set(-12.5f, 9.5f);
-		R2 = m_world->CreateBody(&r2bd);
-		R2->CreateFixture(&r2fd);
-		
-		//L4 and R2
-		b2WeldJointDef jointDef5;
-		jointDef5.bodyA = L4;
-		jointDef5.bodyB = R2;
-		jointDef5.localAnchorA.Set(6.0,0);
-		jointDef5.localAnchorB.Set(0, 0);
-		jointDef5.collideConnected = true;
-		m_world->CreateJoint(&jointDef5);
-		
-		//main frame
-		b2PolygonShape shapeOfMainFrame;
-		shapeOfMainFrame.SetAsBox(9.5f, 0.25f);
-		b2BodyDef mainFrame;
-		mainFrame.position.Set(-1.5f, 9.75f);
-		mainFrame.type = b2_dynamicBody;
-		b2Body* mFrame = m_world->CreateBody(&mainFrame);
-		b2FixtureDef fmFrame;
-		fmFrame.filter.groupIndex = -1;
-		fmFrame.filter.categoryBits = 0x0002;
-		fmFrame.density = 1.f;
-		fmFrame.shape = &shapeOfMainFrame;
-		mFrame->CreateFixture(&fmFrame);
-		
-		b2PolygonShape BoxOnMainFrame;
-		BoxOnMainFrame.SetAsBox(1.5f, 2.25f);
-		b2BodyDef boxOnMainFrame;
-		boxOnMainFrame.position.Set(0.0f, 12.25f);
-		boxOnMainFrame.type = b2_dynamicBody;
-		b2Body* bFrame = m_world->CreateBody(&boxOnMainFrame);
-		b2FixtureDef fbFrame;
-		fbFrame.filter.groupIndex = -1;
-		fbFrame.filter.categoryBits = 0x0002;
-		fbFrame.filter.maskBits = 0x0002 | 0x000;
-		fbFrame.density = 5.f;
-		fbFrame.shape = &BoxOnMainFrame;
-		bFrame->CreateFixture(&fbFrame);
-		
-		b2PolygonShape backFrame;
-		backFrame.SetAsBox(0.5f, 2.25f);
-		b2BodyDef backbodyFrame;
-		backbodyFrame.position.Set(-9.5f, 12.25f);
-		backbodyFrame.type = b2_dynamicBody;
-		b2Body* bckFrame = m_world->CreateBody(&backbodyFrame);
-		b2FixtureDef bcFrame;
-		bcFrame.filter.groupIndex = -1;
-		bcFrame.filter.categoryBits = 0x0002;
-		bcFrame.filter.maskBits = 0x0002;
-		bcFrame.density = 5.f;
-		bcFrame.shape = &backFrame;
-		bckFrame->CreateFixture(&bcFrame);
-		
-		b2PolygonShape frontFrame;
-		frontFrame.SetAsBox(2.5f, 2.25f);
-		b2BodyDef frontForkBox;
-		frontForkBox.position.Set(5.5f, 12.25f);
-		frontForkBox.type = b2_dynamicBody;
-		b2Body* fronFrame = m_world->CreateBody(&frontForkBox);
-		b2FixtureDef froFrame;
-		froFrame.filter.groupIndex = -1;
-		froFrame.filter.categoryBits = 0x0002;
-		froFrame.filter.maskBits = 0x0002;
-		froFrame.density = 5.f;
-		froFrame.shape = &frontFrame;
-		fronFrame->CreateFixture(&froFrame);
-		
-		b2WeldJointDef bonmframe;
-		bonmframe.bodyA = mFrame;
-		bonmframe.bodyB = bFrame;
-		bonmframe.localAnchorA.Set(1.5f,0.25f);
-		bonmframe.localAnchorB.Set(0,-2.25f);
-		bonmframe.collideConnected = false;
-		m_world->CreateJoint(&bonmframe);
-		
-		b2WeldJointDef bonm2frame;
-		bonm2frame.bodyA = mFrame;
-		bonm2frame.bodyB = bckFrame;
-		bonm2frame.localAnchorA.Set(-7.5f,0.25f);
-		bonm2frame.localAnchorB.Set(0,-2.25f);
-		bonm2frame.collideConnected = false;
-		m_world->CreateJoint(&bonm2frame);
-		
-		b2WeldJointDef frontmainframe;
-		frontmainframe.bodyA = mFrame;
-		frontmainframe.bodyB = fronFrame;
-		frontmainframe.localAnchorA.Set(7.5f,0.25f);
-		frontmainframe.localAnchorB.Set(0,-2.25f);
-		frontmainframe	.collideConnected = false;
-		m_world->CreateJoint(&frontmainframe);
-		
-		//Joint for main frame and top rod
-      b2WeldJointDef jointDefb1;
-      jointDefb1.Initialize(bFrame,body,body->GetWorldCenter());
-      jointDefb1.localAnchorA.Set(0.0f,1.75f) ;
-      jointDefb1.localAnchorB.Set(0.0f,0.0f);
-      jointDefb1.collideConnected = false;
-      m_world->CreateJoint(&jointDefb1);		
-      //Joint for main frame and bottom rod 
-      b2WeldJointDef jointDefb2;
-      jointDefb2.Initialize(bFrame,body4,body4->GetWorldCenter());
-      jointDefb2.localAnchorA.Set(0.5f,-1.75f) ;
-      jointDefb2.localAnchorB.Set(0.0f,0.0f);
-      jointDefb2.collideConnected = false;
-      m_world->CreateJoint(&jointDefb2);		
-      //Joint for main frame and backfork 
-      b2RevoluteJointDef jointDefb3;
-      jointDefb2.Initialize(bckFrame,R2,body4->GetWorldCenter());
-      jointDefb2.localAnchorA.Set(0.0f,1.75f) ;
-      jointDefb2.localAnchorB.Set(0.0f,4.5f);
-      jointDefb2.collideConnected = false;
-      m_world->CreateJoint(&jointDefb2);	
-      //upper fork and mainframe
-        b2RevoluteJointDef jointDefb4;
-		jointDefb4.bodyA = upperFork;
-		jointDefb4.bodyB = fronFrame;
-		jointDefb4.localAnchorA.Set(-10.5f,0);
-		jointDefb4.localAnchorB.Set(-0.5f,0.5f);
-		jointDefb4.collideConnected = false;
-		m_world->CreateJoint(&jointDefb4);	
-		//upper fork and mainframe
-        b2RevoluteJointDef jointDefb5;
-		jointDefb5.bodyA = lowerFork;
-		jointDefb5.bodyB = fronFrame;
-		jointDefb5.localAnchorA.Set(-10.5f,0);
-		jointDefb5.localAnchorB.Set(0.5f,-0.5f);
-		jointDefb5.collideConnected = false;
-		m_world->CreateJoint(&jointDefb5);	
-
-		
+        
       
+
+
+		
+		
 	}
-//~ 
-    //~ 
-    {
-		 //~ /*! \par Block 7:The pulley system
-		   //~ * Variable:bd :: Type:dynamicBody :: Value:position x=-10 and y=15 units.  <br>
-		    //~ */   
+    {   
       b2BodyDef *bd = new b2BodyDef;
-      bd->position.Set(45,2);
+      bd->position.Set(45,4);
       bd->fixedRotation = true;
       
       //~ 
@@ -753,300 +552,12 @@ namespace cs296
       fd1->restitution = 0.5f;
       fd1->shape = new b2PolygonShape;
       b2PolygonShape bs1;
-      bs1.SetAsBox(15,2);
+      bs1.SetAsBox(15,4);
       fd1->shape = &bs1;
        
       b2Body* box1 = m_world->CreateBody(bd);
       box1->CreateFixture(fd1);
-
-      //~ 
-      //~ /*! \par Bl	ock 8:The bar 
-		 //~ * Variable:bd :: Value:position x=10,y=15; density=34.  <br>
-		 //~ * Variable:fd1 :: Value: density=34. <br>
-		 //~ * Variable:box2 :: Type:Body :: Action: Creates a fixture with fd1.<br>
-		//~ */
-      //~ bd->position.Set(10,15);	
-      //~ fd1->density = 34.0;	  
-      //~ b2Body* box2 = m_world->CreateBody(bd);
-      //~ box2->CreateFixture(fd1);
-//~ 
-      //~ 
-      //~ /*! \par Block 9:The pulley joint 
-		 //~ * Variable:myjoint  <br>
-		 //~ * Anchor point on body 1 in world axis of value (-10,15)<br>
-		 //~ * Anchor point on body 2 in world axis of value (10,15)<br>
-		 //~ * Anchor point on body 1 in world axis of value (-10,20)<br>
-		 //~ * Anchor point on body 2 in world axis of value (10,20)<br>
-		//~ */
-      //~ b2PulleyJointDef* myjoint = new b2PulleyJointDef();
-      //~ b2Vec2 worldAnchorOnBody1(-10, 15); // Anchor point on body 1 in world axis
-      //~ b2Vec2 worldAnchorOnBody2(10, 15); // Anchor point on body 2 in world axis
-      //~ b2Vec2 worldAnchorGround1(-10, 20); // Anchor point for ground 1 in world axis
-      //~ b2Vec2 worldAnchorGround2(10, 20); // Anchor point for ground 2 in world axis
-      //~ float32 ratio = 1.0f; // Define ratio
-      //~ myjoint->Initialize(box1, box2, worldAnchorGround1, worldAnchorGround2, box1->GetWorldCenter(), box2->GetWorldCenter(), ratio);
-      //~ m_world->CreateJoint(myjoint);
     }
-//~ 
-    //~ 
-    //~ {
-		//~ /*! \par Block 10:The revolving horizontal platform
-		 //~ * Variable:shape :: Type:PolygonShape :: Value: height=2.2,width=0.2 <br>
-		 //~ * Variable:bd :: Value: position x=14,y=14 :: Type: dynamicBody :: Action: Makes the heavy sphere fall down <br>
-		 //~ * Variable:shape2 :: Type:PolygonShape :: Value: height=0.2,width=2.0<br>
-		 //~ * Variable:bd2 :: Value: position x=14,y=16. <br>
-		 //~ * Variable:jointDef :: collideConnected = false :: Action: Sets localAnchorA and localAnchorB.  
-		//~ */
-      //~ b2PolygonShape shape;
-      //~ shape.SetAsBox(2.2f, 0.2f);
-	//~ 
-      //~ b2BodyDef bd;
-      //~ bd.position.Set(14.0f, 14.0f);
-      //~ bd.type = b2_dynamicBody;
-      //~ b2Body* body = m_world->CreateBody(&bd);
-      //~ b2FixtureDef *fd = new b2FixtureDef;
-      //~ fd->density = 1.f;
-      //~ fd->shape = new b2PolygonShape;
-      //~ fd->shape = &shape;
-      //~ body->CreateFixture(fd);
-//~ 
-      //~ b2PolygonShape shape2;
-      //~ shape2.SetAsBox(0.2f, 2.0f);
-      //~ b2BodyDef bd2;
-      //~ bd2.position.Set(14.0f, 16.0f);
-      //~ b2Body* body2 = m_world->CreateBody(&bd2);
-//~ 
-      //~ b2RevoluteJointDef jointDef;
-      //~ jointDef.bodyA = body;
-      //~ jointDef.bodyB = body2;
-      //~ jointDef.localAnchorA.Set(0,0);
-      //~ jointDef.localAnchorB.Set(0,0);
-      //~ jointDef.collideConnected = false;
-      //~ m_world->CreateJoint(&jointDef);
-    //~ }
-//~ 
-    //~ {
-		//~ /*! \par Block 11:The heavy sphere on the platform
-		 //~ * Variable:ballfd :: shape:Circle :: Value: radius=1, density=50,fricion=0,restitution=0 <br>
-		 //~ * Variable:ballbd :: Type: dynamicBody :: position x=14,y=18 :: Action: Will fall on the see-saw system after horizontal platform starts rotating<br>  
-		//~ */
-      //~ b2Body* sbody;
-      //~ b2CircleShape circle;
-      //~ circle.m_radius = 1.0;
-	//~ 
-      //~ b2FixtureDef ballfd;
-      //~ ballfd.shape = &circle;
-      //~ ballfd.density = 50.0f;
-      //~ ballfd.friction = 0.0f;
-      //~ ballfd.restitution = 0.0f;
-      //~ b2BodyDef ballbd;
-      //~ ballbd.type = b2_dynamicBody;
-      //~ ballbd.position.Set(14.0f, 18.0f);
-      //~ sbody = m_world->CreateBody(&ballbd);
-      //~ sbody->CreateFixture(&ballfd);
-    //~ }
-//~ 
-//~ 
-    //~ 
-    //~ {
-	//~ /*! \par Block 12:The see-saw system at the bottom
-		 //~ */
-	//~ /*! \par
-	 //~ * The Wedge placed on the ground to support plank
-	 //~ * Variable:poly :: Value: Triangle with coordinates (1,0),(-1,0),(0,1.5) :: Type: PolygonShape. <br>
-         //~ * Variable:wedgefd :: Value: Density=10,friction=0,restitution=0,shape=poly :: Type: b2FixtureDef. <br>
-         //~ * Variable:wedgebd :: Value: Position x=30 y=0 :: Type:b2BodyDef. <br>
-         //~ */ 
-      //~ b2Body* sbody;
-      //~ b2PolygonShape poly;
-      //~ b2Vec2 vertices[3];
-      //~ vertices[0].Set(-1,0);
-      //~ vertices[1].Set(1,0);
-      //~ vertices[2].Set(0,1.5);
-      //~ poly.Set(vertices, 3);
-      //~ b2FixtureDef wedgefd;
-      //~ wedgefd.shape = &poly;
-      //~ wedgefd.density = 10.0f;
-      //~ wedgefd.friction = 0.0f;
-      //~ wedgefd.restitution = 0.0f;
-      //~ b2BodyDef wedgebd;
-      //~ wedgebd.position.Set(30.0f, 0.0f);
-      //~ sbody = m_world->CreateBody(&wedgebd);
-      //~ sbody->CreateFixture(&wedgefd);
-      //~ 
-      //~ /*! \par
-       //~ * The plank on top of the wedge
-       //~ * Variable:shape :: Value: height=15,width=0.2 :: Type:Polygonshape. <br>
-       //~ * Variable:bd2 :: Value: Position x=30,y=1.5. <br>
-       //~ * Variable:fd2 :: Value: density=1,shape=PolygonShape. <br>
-       //~ * Variable:jd :: anchor: x=30,y=1.5.  
-       //~ */
-      //~ b2PolygonShape shape;
-      //~ shape.SetAsBox(15.0f, 0.2f);  
-      //~ b2BodyDef bd2;
-      //~ bd2.position.Set(30.0f, 1.5f);
-      //~ bd2.type = b2_dynamicBody;
-      //~ b2Body* body = m_world->CreateBody(&bd2);
-      //~ b2FixtureDef *fd2 = new b2FixtureDef;
-      //~ fd2->density = 1.f;
-      //~ fd2->shape = new b2PolygonShape;
-      //~ fd2->shape = &shape;
-      //~ body->CreateFixture(fd2);
-//~ 
-      //~ b2RevoluteJointDef jd;
-      //~ b2Vec2 anchor;
-      //~ anchor.Set(30.0f, 1.5f);
-      //~ jd.Initialize(sbody, body, anchor);
-      //~ m_world->CreateJoint(&jd);
-//~ 
-      //~ 
-      //~ /*! \par
-       //~ * The light box on the right side of the see-saw
-       //~ * Variable:shape2 :: Value: height=2,width=2 :: Type:Polygonshape. <br>
-       //~ * Variable:bd3 :: Value: Position x=40,y=2. <br>
-       //~ * Variable:fd3 :: Value: density=0.01,shape=PolygonShape.  
-       //~ */
-      //~ b2PolygonShape shape2;
-      //~ shape2.SetAsBox(2.0f, 2.0f);
-      //~ b2BodyDef bd3;
-      //~ bd3.position.Set(40.0f, 2.0f);
-      //~ bd3.type = b2_dynamicBody;
-      //~ b2Body* body3 = m_world->CreateBody(&bd3);
-      //~ b2FixtureDef *fd3 = new b2FixtureDef;
-      //~ fd3->density = 0.01f;
-      //~ fd3->shape = new b2PolygonShape;
-      //~ fd3->shape = &shape2;
-      //~ body3->CreateFixture(fd3);
-    //~ }
-//~ 
-     //~ //A fixed wedge giving direction to falling ball
-     //~ {
-	//~ /*! \par Block 13: The Wedge fixed to give direction to falling ball
-	 //~ * Variable:polygon :: Value: Triangle with coordinates (0,0),(3,0),(0,2.5) :: Type: PolygonShape. <br>
-         //~ * Variable:bf :: Value: Density=90, shape=polygon :: Type: b2FixtureDef. <br>
-         //~ * Variable:bd :: Value: Position x=15.5 y=10 :: Type:b2BodyDef. <br>
-         //~ */ 
-	//~ b2Vec2 vertices[3];
-	//~ vertices[0].Set(0.0f, 0.0f);
-	//~ vertices[1].Set(3.0f, 0.0f);
-	//~ vertices[2].Set(0.0f, 2.5f);
-	//~ int32 count = 3;
-	//~ b2PolygonShape polygon;
-	//~ polygon.Set(vertices, count);
-	//~ b2FixtureDef bf;
-	//~ bf.shape = &polygon;
-	//~ bf.density = 90.0f;
-	//~ b2BodyDef bd;
-	//~ bd.position.Set(15.5f, 10.0f);
-	//~ b2Body* ground = m_world->CreateBody(&bd);
-	//~ ground->CreateFixture(&bf);
-     //~ }
-//~ 
-     //~ //One side rotating platform
-     //~ {
-	//~ /*! \par Block 14: One side Hinged platform
-         //~ */
-//~ 
-	//~ /*! \par 
-	 //~ * Plank that will be rotating
-	 //~ * Variable:shape :: Value: Width: 0.4, Length:25.0 :: Type: PolygonShape. <br>
-         //~ * Variable:fd :: Value: Density=0.0001, shape=shape :: Type: b2FixtureDef. <br>
-         //~ * Variable:bd :: Value: Position x=32.5 y=24 Type=b2_dynamicBody :: DataType:b2BodyDef. <br>
-         //~ */ 
-      //~ b2PolygonShape shape;
-      //~ shape.SetAsBox(12.5f, 0.2f);
-      //~ b2BodyDef bd;
-      //~ bd.position.Set(32.5f, 24.0f);
-      //~ bd.type = b2_dynamicBody;
-      //~ b2Body* body = m_world->CreateBody(&bd);
-      //~ b2FixtureDef *fd = new b2FixtureDef;
-      //~ fd->density = 0.0001f;
-      //~ fd->shape = new b2PolygonShape;
-      //~ fd->shape = &shape;
-      //~ body->CreateFixture(fd);
-//~ 
-	//~ /*! \par 
-	 //~ * Circle to which plank is anchored
-	 //~ * Variable:circle :: Value: Radius = 1 :: Type: CircleShape. <br>
-         //~ * Variable:fd2 :: Value: Density=1, shape=circle :: Type: b2FixtureDef. <br>
-         //~ * Variable:ballbd :: Value: Position x=20 y=24 :: DataType:b2BodyDef. <br>
-         //~ */      
-      //~ b2Body* body2;
-      //~ b2CircleShape circle;
-      //~ circle.m_radius = 1.0f;
-      //~ b2BodyDef ballbd;
-      //~ ballbd.position.Set(20.0f, 24.0f);
-      //~ body2 = m_world->CreateBody(&ballbd);
-      //~ b2FixtureDef fd2;
-      //~ fd2.density = 1.0f;
-      //~ fd2.shape = &circle;
-      //~ body2->CreateFixture(&fd2);
- //~ 
-	//~ /*! \par 
-	 //~ * Anchor to join circle and plank.
-	 //~ * Variable:jointDef :: Value: collideConnected=false, Initialized with anchor at center of circle :: Type: RevoluteJointDef. <br>
-         //~ */      
-      //~ b2RevoluteJointDef jointDef;
-      //~ jointDef.Initialize(body2,body,body2->GetWorldCenter());
-      //~ jointDef.collideConnected = false;
-      //~ m_world->CreateJoint(&jointDef);		
-     //~ }
-     //~ //stopper
-     //~ { 
-	//~ /*! \par Block 15: Stopper to stop plank at one side.
-	 //~ * Variable:shape :: Value: Width: 0.4, Length:2.0 :: Type: PolygonShape. <br>
-         //~ * Variable:bf :: Value: Density=90, shape=shape :: Type: b2FixtureDef. <br>
-         //~ * Variable:bd :: Value: Position x=45 y=20.5:: DataType:b2BodyDef. <br>
-         //~ */ 
-       //~ b2PolygonShape shape;
-       //~ shape.SetAsBox(1.0f,0.2f);
-       //~ b2BodyDef bd;
-       //~ bd.position.Set(45.0f,20.5f);
-       //~ b2Body* body = m_world->CreateBody(&bd); 	
-       //~ b2FixtureDef bf;
-       //~ bf.shape = &shape;
-       //~ bf.density = 90.0f;
-       //~ body->CreateFixture(&bf);
-      //~ }
-      //~ //base for square block
-      //~ {
-	//~ /*! \par Block 16: Plank for Square to rest 
-	 //~ * Variable:shape :: Value: Width: 0.4, Length:2.0 :: Type: PolygonShape. <br>
-         //~ * Variable:bf :: Value: Density=90, Friction=1, shape=shape :: Type: b2FixtureDef. <br>
-         //~ * Variable:bd :: Value: Position x=9 y=30.5 :: DataType:b2BodyDef. <br>
-         //~ */ 
-       //~ b2PolygonShape shape;
-       //~ shape.SetAsBox(1.0f,0.2f);
-       //~ b2BodyDef bd;
-       //~ bd.position.Set(9.0f,30.5f);
-       //~ b2Body* body = m_world->CreateBody(&bd); 	
-       //~ b2FixtureDef bf;
-       //~ bf.shape = &shape;
-       //~ bf.density = 90.0f;
-       //~ bf.friction=1.0f;
-       //~ body->CreateFixture(&bf);
-      //~ }
-      //~ 
-      //~ {
-	//~ /*! \par Block 17: Falling Square 
-	 //~ * Variable:shape2 :: Value: Width: 4, Length:4 :: Type: PolygonShape. <br>
-         //~ * Variable:bf :: Value: Density=0.00001, shape=shape2 :: Type: b2FixtureDef. <br>
-         //~ * Variable:bd :: Value: Position x=9 y=32.5 :: DataType:b2BodyDef. <br>
-         //~ */ 
-      //~ b2PolygonShape shape2;
-      //~ shape2.SetAsBox(2.0f, 2.0f);
-      //~ b2BodyDef bd3;
-      //~ bd3.position.Set(9.0f, 32.5f);
-      //~ bd3.type = b2_dynamicBody;
-      //~ b2Body* body3 = m_world->CreateBody(&bd3);
-      //~ b2FixtureDef *fd3 = new b2FixtureDef;
-      //~ fd3->density = 0.00001f;
-      //~ fd3->shape = new b2PolygonShape;
-      //~ fd3->shape = &shape2;
-      //~ body3->CreateFixture(fd3);
-    //~ }
-//~ 
-	//~ 
   }
 
   sim_t *sim = new sim_t("Dominos", dominos_t::create);
