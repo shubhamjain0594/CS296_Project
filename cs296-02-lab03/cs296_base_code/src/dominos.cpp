@@ -39,8 +39,15 @@ using namespace std;
 
 namespace cs296
 {
+	b2RevoluteJoint* join;
  	void dominos_t::keyboard(unsigned char key)
 	{
+		switch(key)
+		{
+			case('a'):
+				join->SetMotorSpeed(10.0f);
+		}
+		
 	}	
 
   dominos_t::dominos_t()
@@ -163,7 +170,7 @@ namespace cs296
         centerLeftTirejoint.collideConnected = false;
         centerLeftTirejoint.enableMotor = true;
         centerLeftTirejoint.maxMotorTorque = 20000000.0f;
-        centerLeftTirejoint.motorSpeed = 10.0f;
+        //centerLeftTirejoint.motorSpeed = 10.0f;
         m_world->CreateJoint(&centerLeftTirejoint);	
         //Joint between center right tire and center right rod
         b2RevoluteJointDef centerRightTirejoint;
@@ -172,7 +179,7 @@ namespace cs296
         centerRightTirejoint.collideConnected = false;	
         centerRightTirejoint.enableMotor = true;
         centerRightTirejoint.maxMotorTorque = 20000000.0f;
-        centerRightTirejoint.motorSpeed = 10.0f;
+        //centerRightTirejoint.motorSpeed = 10.0f;
         m_world->CreateJoint(&centerRightTirejoint);
         //main frame plate
 		b2PolygonShape mainFramePlate;
@@ -341,7 +348,7 @@ namespace cs296
         backTirejoint.collideConnected = false;	
         backTirejoint.enableMotor = true;
         backTirejoint.maxMotorTorque = 20000000.0f;
-        backTirejoint.motorSpeed = 10.0f;
+        //backTirejoint.motorSpeed = 10.0f;
         m_world->CreateJoint(&backTirejoint);
         //Box to join front fork and main plate
         b2PolygonShape frontFrameshape;
@@ -528,8 +535,8 @@ namespace cs296
         frontTirejoint.collideConnected = false;	
         frontTirejoint.enableMotor = true;
         frontTirejoint.maxMotorTorque = 20000000.0f;
-        frontTirejoint.motorSpeed = 10.0f;
-        m_world->CreateJoint(&frontTirejoint);
+        //frontTirejoint.motorSpeed = 10.0f;
+        join = (b2RevoluteJoint*)m_world->CreateJoint(&frontTirejoint);
 
         
       
