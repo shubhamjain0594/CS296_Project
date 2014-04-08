@@ -38,14 +38,34 @@ using namespace std;
 #include "dominos.hpp"
 
 namespace cs296
-{
-	b2RevoluteJoint* join;
+{	
+	float i=0;
+	b2RevoluteJoint* frontJoint;
+	b2RevoluteJoint* backJoint;
+	b2RevoluteJoint* centerBackJoint;
+	b2RevoluteJoint* centerFrontJoint;
  	void dominos_t::keyboard(unsigned char key)
 	{
 		switch(key)
 		{
+			case('d'):
+				if(i <3){
+				i = i+0.1f;
+				}
+				frontJoint->SetMotorSpeed(i);
+				backJoint->SetMotorSpeed(i);
+				centerFrontJoint->SetMotorSpeed(i);
+				centerBackJoint->SetMotorSpeed(i);
+				break;
 			case('a'):
-				join->SetMotorSpeed(10.0f);
+				if(i>-3){
+				i = i-0.1f;
+				}
+				frontJoint->SetMotorSpeed(i);
+				backJoint->SetMotorSpeed(i);
+				centerFrontJoint->SetMotorSpeed(i);
+				centerBackJoint->SetMotorSpeed(i);
+				break;
 		}
 		
 	}	
@@ -64,7 +84,7 @@ namespace cs296
 	 */
     {
       b2EdgeShape shape;     
-      shape.Set(b2Vec2(-90.0f, 0.0f), b2Vec2(90.0f, 0.0f));
+      shape.Set(b2Vec2(-1800.0f, 0.0f), b2Vec2(1800.0f, 0.0f));
       b2BodyDef bd; 
       b1 = m_world->CreateBody(&bd);
       b1->CreateFixture(&shape, 0.0f);
@@ -149,9 +169,9 @@ namespace cs296
         centerLeftcircle.m_radius = 3.5f;
         b2FixtureDef centerLeftTirefd;
         centerLeftTirefd.shape = &centerLeftcircle;
-        centerLeftTirefd.density = 1600.0f;
-        centerLeftTirefd.friction = 0.5f;
-        centerLeftTirefd.restitution = 0.5f;
+        centerLeftTirefd.density = 3000.0f;
+        centerLeftTirefd.friction = 1.f;
+        centerLeftTirefd.restitution = 1.f;
         b2BodyDef centerLeftTirebd;
         centerLeftTirebd.type = b2_dynamicBody;
         centerLeftTirebd.position.Set(-6.0f, 3.5f);
@@ -171,7 +191,7 @@ namespace cs296
         centerLeftTirejoint.enableMotor = true;
         centerLeftTirejoint.maxMotorTorque = 20000000.0f;
         //centerLeftTirejoint.motorSpeed = 10.0f;
-        m_world->CreateJoint(&centerLeftTirejoint);	
+        centerBackJoint=(b2RevoluteJoint*)m_world->CreateJoint(&centerLeftTirejoint);	
         //Joint between center right tire and center right rod
         b2RevoluteJointDef centerRightTirejoint;
         centerRightTirejoint.Initialize(centerRightTire,centerRight,centerRightTire->GetWorldCenter());
@@ -180,7 +200,7 @@ namespace cs296
         centerRightTirejoint.enableMotor = true;
         centerRightTirejoint.maxMotorTorque = 20000000.0f;
         //centerRightTirejoint.motorSpeed = 10.0f;
-        m_world->CreateJoint(&centerRightTirejoint);
+        centerFrontJoint=(b2RevoluteJoint*)m_world->CreateJoint(&centerRightTirejoint);
         //main frame plate
 		b2PolygonShape mainFramePlate;
 		mainFramePlate.SetAsBox(10.5f, 0.25f);
@@ -213,8 +233,8 @@ namespace cs296
 		mainTopjoint.localAnchorA.Set(0.0f,1.75f) ;
 		mainTopjoint.localAnchorB.Set(0.0f,0.0f);
 		mainTopjoint.enableLimit = true;
-		mainTopjoint.upperAngle = 0.5f;
-		mainTopjoint.lowerAngle = -0.5f;
+		mainTopjoint.upperAngle = 0.6f;
+		mainTopjoint.lowerAngle = -0.6f;
 		mainTopjoint.collideConnected = false;
 		m_world->CreateJoint(&mainTopjoint);		
 		//Joint for main frame and bottom rod 
@@ -241,7 +261,7 @@ namespace cs296
 		b2Body* backFrame = m_world->CreateBody(&backFramebd);
 		b2FixtureDef backFramefd;
 		backFramefd.filter.categoryBits = 0x0008;
-		backFramefd.density = 2700.f;
+		backFramefd.density = 10000.f;
 		backFramefd.friction = 0.0f;
 		backFramefd.shape = &backFrameShape;
 		backFrame->CreateFixture(&backFramefd);
@@ -266,7 +286,7 @@ namespace cs296
 		backPart3fd.shape = &backPart3shape;
 		backPart3fd.density = 2700.0f;
 		backPart3fd.friction = 0.0f;
-		backPart3fd.restitution = 0.0f;
+		backPart3fd.restitution = 1.f;
 		b2BodyDef backPart3bd;
 		backPart3bd.type = b2_dynamicBody;
 		backPart3bd.position.Set(-10.0f, 15.0f);
@@ -276,7 +296,8 @@ namespace cs296
         b2RevoluteJointDef mainBackjoint;
 		mainBackjoint.Initialize(backFrame,backPart3,backPart3->GetWorldCenter());
 		mainBackjoint.enableLimit = true;
-		mainBackjoint.upperAngle = 0.f;
+		mainBackjoint.upperAngle = 0.1f;
+		mainBackjoint.lowerAngle = -0.1f;
 		mainBackjoint.localAnchorA.Set(0.0f,1.75f) ;
 		mainBackjoint.localAnchorB.Set(0.0f,0.0f);
 		mainBackjoint.collideConnected = false;
@@ -294,7 +315,7 @@ namespace cs296
 		backPart2fd.shape = &backPart2shape;
 		backPart2fd.density = 2700.0f;
 		backPart2fd.friction = 0.0f;
-		backPart2fd.restitution = 0.0f;
+		backPart2fd.restitution = 1.0f;
 		b2BodyDef backPart2bd;
 		backPart2bd.type = b2_dynamicBody;
 		backPart2bd.position.Set(-14.0f, 11.f);
@@ -321,7 +342,7 @@ namespace cs296
 		backPart1fd.shape = &backPart1shape;
 		backPart1fd.density = 2700.0f;
 		backPart1fd.friction = 0.0f;
-		backPart1fd.restitution = 0.0f;
+		backPart1fd.restitution = 1.0f;
 		b2BodyDef backPart1bd;
 		backPart1bd.type = b2_dynamicBody;
 		backPart1bd.position.Set(-20.0f, 11.f);
@@ -349,7 +370,7 @@ namespace cs296
         backTirejoint.enableMotor = true;
         backTirejoint.maxMotorTorque = 20000000.0f;
         //backTirejoint.motorSpeed = 10.0f;
-        m_world->CreateJoint(&backTirejoint);
+        backJoint=(b2RevoluteJoint*)m_world->CreateJoint(&backTirejoint);
         //Box to join front fork and main plate
         b2PolygonShape frontFrameshape;
 		frontFrameshape.SetAsBox(2.5f, 2.75f);
@@ -386,7 +407,7 @@ namespace cs296
 		frontPartUpperForkfd.filter.categoryBits = 0x0008;
 		frontPartUpperForkfd.filter.maskBits = 0x0010;
 		frontPartUpperForkfd.friction = 0.0f;
-		frontPartUpperForkfd.restitution = 0.0f;
+		frontPartUpperForkfd.restitution = 1.0f;
 		b2BodyDef frontPartUpperForkbd;
 		frontPartUpperForkbd.type = b2_dynamicBody;
 		frontPartUpperForkbd.position.Set(6.5f, 14.0f);
@@ -400,8 +421,8 @@ namespace cs296
         frontUpperForkjoint.localAnchorB.Set(-1.0f,0.75f);
         frontUpperForkjoint.collideConnected = false;	
         frontUpperForkjoint.enableLimit = true;
-		frontUpperForkjoint.upperAngle = 0.8f;
-		frontUpperForkjoint.lowerAngle = -0.8f;
+		frontUpperForkjoint.upperAngle = 1.f;
+		frontUpperForkjoint.lowerAngle = -1.f;
         m_world->CreateJoint(&frontUpperForkjoint);
         //Front frame part 3
 		b2Vec2 frontPart3vertices[4];
@@ -417,7 +438,7 @@ namespace cs296
 		frontPart3fd.density = 2700.0f;
 		frontPart3fd.filter.categoryBits = 0x0008;
 		frontPart3fd.friction = 0.0f;
-		frontPart3fd.restitution = 0.0f;
+		frontPart3fd.restitution = 1.0f;
 		b2BodyDef frontPart3bd;
 		frontPart3bd.type = b2_dynamicBody;
 		frontPart3bd.position.Set(12.5f, 21.5f);
@@ -446,7 +467,7 @@ namespace cs296
 		frontPartLowerForkfd.filter.categoryBits = 0x0010;
 		frontPartLowerForkfd.filter.maskBits = 0x0008;
 		frontPartLowerForkfd.friction = 0.0f;
-		frontPartLowerForkfd.restitution = 0.0f;
+		frontPartLowerForkfd.restitution = 1.0f;
 		b2BodyDef frontPartLowerForkbd;
 		frontPartLowerForkbd.type = b2_dynamicBody;
 		frontPartLowerForkbd.position.Set(9.0f, 12.0f);
@@ -481,7 +502,7 @@ namespace cs296
 		frontPart2fd.shape = &frontPart2shape;
 		frontPart2fd.density = 2700.0f;
 		frontPart2fd.friction = 0.0f;
-		frontPart2fd.restitution = 0.0f;
+		frontPart2fd.restitution = 1.0f;
 		b2BodyDef frontPart2bd;
 		frontPart2bd.type = b2_dynamicBody;
 		frontPart2bd.position.Set(19.5f, 9.5f);
@@ -507,8 +528,8 @@ namespace cs296
 		b2FixtureDef frontPart1fd;
 		frontPart1fd.shape = &frontPart1shape;
 		frontPart1fd.density = 2700.0f;
-		frontPart1fd.friction = 0.5f;
-		frontPart1fd.restitution = 0.0f;
+		frontPart1fd.friction = 0.0f;
+		frontPart1fd.restitution = 1.0f;
 		b2BodyDef frontPart1bd;
 		frontPart1bd.type = b2_dynamicBody;
 		frontPart1bd.position.Set(22.0f, 9.5f);
@@ -536,7 +557,7 @@ namespace cs296
         frontTirejoint.enableMotor = true;
         frontTirejoint.maxMotorTorque = 20000000.0f;
         //frontTirejoint.motorSpeed = 10.0f;
-        join = (b2RevoluteJoint*)m_world->CreateJoint(&frontTirejoint);
+        frontJoint = (b2RevoluteJoint*)m_world->CreateJoint(&frontTirejoint);
 
         
       
@@ -545,31 +566,39 @@ namespace cs296
 		
 		
 	}
-    {   
-      b2BodyDef *bd = new b2BodyDef;
-      bd->position.Set(90,4);
-      bd->fixedRotation = true;
+	//Terrain
+    {   	
+		b2BodyDef *bd = new b2BodyDef;
+		bd->position.Set(110,2);
+		bd->fixedRotation = true;
+		b2FixtureDef *fd1 = new b2FixtureDef;
+		fd1->density = 10.0;
+		fd1->friction = 1.f;
+		fd1->restitution = 1.0f;
+		fd1->shape = new b2PolygonShape;
+		b2PolygonShape bs1;
+		bs1.SetAsBox(50,2);
+		fd1->shape = &bs1; 
+		b2Body* box1 = m_world->CreateBody(bd);
+		box1->CreateFixture(fd1);
       
-      //~ 
-	    /*! \par
-	     * The open box 
-		 * Variable:fd1,fd2,fd3:: Type:FixtureDef :: Value:density=10,fricion=0.5,restitution=0 :: Action:To collect the spheres and pull down the pulley.  <br>
-		 * Variable:bs1 :: Type:PolygonShape :: Value: height=2,width=0.2; position x=0,y=-1.9.<br>
-		 * Variable:bs2 :: Type:PolygonShape :: Value: height=0.2,width=2; position x=2,y=-0.<br>
-		 * Variable:bs3 :: Type:PolygonShape :: Value: height=0.2,width=2; position x=-2,y=0.<br>
-		 * Variable:box1 :: Action: Creates a box of fd1,fd2 and fd3.<br>
-		*/   
-      b2FixtureDef *fd1 = new b2FixtureDef;
-      fd1->density = 10.0;
-      fd1->friction = 100;
-      fd1->restitution = 0.5f;
-      fd1->shape = new b2PolygonShape;
-      b2PolygonShape bs1;
-      bs1.SetAsBox(60,4);
-      fd1->shape = &bs1;
-       
-      b2Body* box1 = m_world->CreateBody(bd);
-      box1->CreateFixture(fd1);
+		b2Vec2 Terrain1vertices[5];
+		Terrain1vertices[2].Set(0.f, 3.f);
+		Terrain1vertices[1].Set(50.f, 30.0f);
+		Terrain1vertices[0].Set(100.f, 4.f);
+		Terrain1vertices[3].Set(100.f, 0.f);
+		Terrain1vertices[4].Set(0.f, 0.f);
+		b2Body* Terrain1;
+		b2PolygonShape Terrain1shape;
+		Terrain1shape.Set(Terrain1vertices, 5);
+		b2FixtureDef Terrain1fd;
+		Terrain1fd.shape = &Terrain1shape;
+		Terrain1fd.friction = 1.0f;
+		Terrain1fd.restitution = 1.0f;
+		b2BodyDef Terrain1bd;
+		Terrain1bd.position.Set(70.f, 4.f);
+		Terrain1 = m_world->CreateBody(&Terrain1bd);
+		Terrain1->CreateFixture(&Terrain1fd);
     }
   }
 
