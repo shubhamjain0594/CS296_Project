@@ -489,6 +489,16 @@ namespace cs296
         frontLowerForkPart3joint.localAnchorB.Set(2.0f,-4.5f);
         frontLowerForkPart3joint.collideConnected = false;	
         m_world->CreateJoint(&frontLowerForkPart3joint);
+        //Spring
+        b2DistanceJointDef Springjoint;
+        Springjoint.bodyA=frontPartLowerFork,
+        Springjoint.bodyB=frontPartUpperFork;
+        Springjoint.localAnchorA.Set(2.75f,2.75f);
+        Springjoint.localAnchorB.Set(3.0f,3.75f);
+        Springjoint.collideConnected = false;
+        Springjoint.frequencyHz = 2.0f;
+        Springjoint.dampingRatio = 0.1f;	
+        m_world->CreateJoint(&Springjoint);
         //front frame part 2 
         b2Vec2 frontPart2vertices[4];
 		frontPart2vertices[2].Set(-1.f, 1.f);
@@ -568,25 +578,11 @@ namespace cs296
 	}
 	//Terrain
     {   	
-		b2BodyDef *bd = new b2BodyDef;
-		bd->position.Set(110,2);
-		bd->fixedRotation = true;
-		b2FixtureDef *fd1 = new b2FixtureDef;
-		fd1->density = 10.0;
-		fd1->friction = 1.f;
-		fd1->restitution = 1.0f;
-		fd1->shape = new b2PolygonShape;
-		b2PolygonShape bs1;
-		bs1.SetAsBox(50,2);
-		fd1->shape = &bs1; 
-		b2Body* box1 = m_world->CreateBody(bd);
-		box1->CreateFixture(fd1);
-      
 		b2Vec2 Terrain1vertices[5];
-		Terrain1vertices[2].Set(0.f, 3.f);
+		Terrain1vertices[0].Set(0.f, 0.f);
 		Terrain1vertices[1].Set(50.f, 30.0f);
-		Terrain1vertices[0].Set(100.f, 4.f);
-		Terrain1vertices[3].Set(100.f, 0.f);
+		Terrain1vertices[2].Set(120.f, 30.f);
+		Terrain1vertices[3].Set(120.f, 0.f);
 		Terrain1vertices[4].Set(0.f, 0.f);
 		b2Body* Terrain1;
 		b2PolygonShape Terrain1shape;
@@ -596,9 +592,28 @@ namespace cs296
 		Terrain1fd.friction = 1.0f;
 		Terrain1fd.restitution = 1.0f;
 		b2BodyDef Terrain1bd;
-		Terrain1bd.position.Set(70.f, 4.f);
+		Terrain1bd.position.Set(70.f, 0.f);
 		Terrain1 = m_world->CreateBody(&Terrain1bd);
 		Terrain1->CreateFixture(&Terrain1fd);
+		
+		b2Vec2 Terrain2vertices[5];
+		Terrain2vertices[0].Set(0.f, 0.f);
+		Terrain2vertices[1].Set(0.f, 35.0f);
+		Terrain2vertices[2].Set(60.f, 60.f);
+		Terrain2vertices[3].Set(130.f, 60.f);
+		Terrain2vertices[4].Set(210.f, 0.f);
+		b2Body* Terrain2;
+		b2PolygonShape Terrain2shape;
+		Terrain2shape.Set(Terrain2vertices, 5);
+		b2FixtureDef Terrain2fd;
+		Terrain2fd.shape = &Terrain2shape;
+		Terrain2fd.friction = 1.0f;
+		Terrain2fd.restitution = 1.0f;
+		b2BodyDef Terrain2bd;
+		Terrain2bd.position.Set(190.f, 0.f);
+		Terrain2 = m_world->CreateBody(&Terrain2bd);
+		Terrain2->CreateFixture(&Terrain2fd);
+
     }
   }
 

@@ -92,7 +92,7 @@ void debug_draw_t::DrawSolidCircle(const b2Vec2& center, float32 radius, const b
 	float32 theta = 0.0f;
 	glEnable(GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4f(0.5f * color.r, 0.5f * color.g, 0.5f * color.b, 0.5f);
+	glColor4f(0.6f * color.r, 0.f * color.g, 0.6f * color.b, 0.5f);
 	glBegin(GL_TRIANGLE_FAN);
 	for (int32 i = 0; i < k_segments; ++i)
 	{
