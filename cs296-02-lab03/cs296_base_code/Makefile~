@@ -12,21 +12,17 @@ SED	= sed
 DOXYGEN = doxygen
 ######################################
 # Project Name (generate executable with this name)
-TARGET = cs296_base
+TARGET = cs296_02_exe	
 
 # Project Paths
 PROJECT_ROOT=$(CURDIR)
 EXTERNAL_ROOT=$(PROJECT_ROOT)/external
-SRCDIR = $(PROJECT_ROOT)/src
 BOX2DPATH=$(EXTERNAL_ROOT)/src
+SRCDIR = $(PROJECT_ROOT)/src
 OBJDIR = $(PROJECT_ROOT)/myobjs
 BINDIR = $(PROJECT_ROOT)/mybins
-DOCDIR = $(PROJECT_ROOT)/mydoc
-SCRIPTDIR = $(PROJECT_ROOT)/scripts
-DATADIR = $(PROJECT_ROOT)/data
-PLOTSDIR = $(PROJECT_ROOT)/plots
-PATCHPATH = $(PROJECT_ROOT)/patches
-PATCHFILE = $(BOX2DPATH)/Box2D/Box2D/Common
+LIBDIR = $(PROJECT_ROOT)/mylibs
+DOCDIR = $(PROJECT_ROOT)/doc
 
 # Library Paths
 BOX2D_ROOT=$(EXTERNAL_ROOT)
@@ -37,9 +33,11 @@ GL_ROOT=/usr/include/
 LIBS = -lBox2D -lglui -lglut -lGLU -lGL
 
 # Compiler and Linker flags
-CPPFLAGS =-g -Wall -O3 -pg -fno-strict-aliasing
+CPPFLAGS =-g -O3 -Wall -fno-strict-aliasing -MMD -fPIC
 CPPFLAGS+=-I $(BOX2D_ROOT)/include -I $(GLUI_ROOT)/include
 LDFLAGS+=-L $(BOX2D_ROOT)/lib -L $(GLUI_ROOT)/lib
+ 
+SHARED_LIB=TRUE
 
 ######################################
 
@@ -63,26 +61,20 @@ INCS := $(wildcard $(SRCDIR)/*.hpp)
 OBJS := $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 
-.PHONY: all setup doc clean distclean data plot
+.PHONY: all setup doc clean distclean exe
 
-all: setup test1 $(BINDIR)/$(TARGET)
+exe: setup test1 $(BINDIR)/$(TARGET)
 
 setup:
 	@$(ECHO) "Setting up compilation..."
-	@mkdir -p obj
-	@mkdir -p bin
-
-test1:
-	@test -f $(EXTERNAL_ROOT)/include/Box2D/Box2D.h || { echo "Installing Box2D" ; make test2 ; }
-
-test2:
-	@cd $(BOX2DPATH);	pwd;	rm -rf Box2D;	tar -xvzf Box2D.tgz;    patch $(PATCHFILE)/b2Timer.cpp $(PATCHPATH)/b2Timer_cpp.patch;  patch $(PATCHFILE)/b2Timer.h $(PATCHPATH)/b2Timer_h.patch;  cd Box2D;	mkdir -p build296;	cd build296;	cmake  ../;	make;	make install;	cd ..;	cd ..;	cd ..;	cd ..
-	@$(ECHO) "Box2D installed successfully"
+	@mkdir -p myobjs
+	@mkdir -p mylibs
+	@mkdir -p mybins
 
 
 $(BINDIR)/$(TARGET): $(OBJS)
 	@$(PRINTF) "$(MESG_COLOR)Building executable:$(NO_COLOR) $(FILE_COLOR) %16s$(NO_COLOR)" "$(notdir $@)"
-	@$(CC) -Wall -pg -O3 -o $@ $(LDFLAGS) $(OBJS) $(LIBS) 2> temp.log || touch temp.err
+	@$(CC) -o $@ $(LDFLAGS) $(OBJS) $(LIBS) 2> temp.log || touch temp.err
 	@if test -e temp.err; \
 	then $(PRINTF) $(ERR_FMT) $(ERR_STRING) && $(CAT) temp.log; \
 	elif test -s temp.log; \
@@ -91,7 +83,34 @@ $(BINDIR)/$(TARGET): $(OBJS)
 	fi;
 	@$(RM) -f temp.log temp.err
 
--include $(OBJS:.o=.d)
+-include $(OBJS:.o=.d)	
+
+test1:
+	@test -f $(EXTERNAL_ROOT)/include/Box2D/Box2D.h || { echo "Installing Box2D" ; make test2 ; }
+
+test2:
+	@cd $(BOX2DPATH);	pwd;	rm -rf Box2D;	tar -xvzf Box2D.tgz;    patch $(PATCHFILE)/b2Timer.cpp $(PATCHPATH)/b2Timer_cpp.patch;  patch $(PATCHFILE)/b2Timer.h $(PATCHPATH)/b2Timer_h.patch;  cd Box2D;	mkdir -p build296;	cd build296;	cmake -DCMAKE_BUILD_TYPE=Debug ../;	make;	make install;	cd ..;	cd ..;	cd ..;	cd ..
+	@$(ECHO) "Box2D installed successfully"
+
+exelib: setup test1 $(OBJS) 
+ifeq ($(SHARED_LIB),TRUE)
+	make dynamic
+else
+	make static
+endif
+
+static: 
+	@rm -f $(LIBDIR)/libCS296.a
+	@$ echo "Creating static library"
+	@ar -cvq $(LIBDIR)/libCS296.a $(filter-out $(OBJDIR)/main.o,$(OBJS))	
+	@$(CC) -o $(BINDIR)/cs296_02_exelib $(OBJDIR)/main.o  $(LIBDIR)/libCS296.a $(LDFLAGS) $(LIBS)	
+
+dynamic: 
+	@rm -f $(LIBDIR)/libCS296test.so
+	export LD_LIBRARY_PATH=$(LIBDIR):$LD_LIBRARY_PATH
+	@$ echo "Creating dynamic library" 
+	@$(CC) -shared -Wl $(filter-out $(OBJDIR)/main.o,$(OBJS)) -o $(LIBDIR)/libCS296test.so
+	@$(CC) -o $(BINDIR)/cs296_02_exelib $(LDFLAGS) $(OBJDIR)/main.o $(LIBDIR)/libCS296test.so $(LIBS) 
 
 $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	@make test1
@@ -111,42 +130,15 @@ doc:
 	@$(DOXYGEN) $(DOCDIR)/Doxyfile 2 > /dev/null
 	@$(ECHO) "Done"
 
-data: all
-	@mkdir -p $(DATADIR)
-	@cd $(SCRIPTDIR); \
-	bash g02_gen_data.sh; \
-	bash g02_gen_csv.sh; \
-	bash g02_gen_data_csv.sh; \
-	bash g02_gen_data_random.sh
-	@echo "Data Compiled"
-	
-plot: data
-	@cd $(SCRIPTDIR); \
-	bash average.sh; \
-	bash frequency.sh; \
-	bash random.sh; \
-	bash random02.sh
-	@chmod +xr $(DATADIR)/*.csv
-	@mkdir -p $(PLOTSDIR)
-	@cd $(SCRIPTDIR); \
-	gnuplot g02_plot01.gpt; \
-	gnuplot g02_plot02.gpt; \
-	gnuplot g02_plot03.gpt; \
-	gnuplot g02_plot04.gpt; \
-	gnuplot g02_plot05.gpt
-	@$(RM) -rf $(DATADIR)/average.csv
-	@$(RM) -rf $(DATADIR)/frequency.csv
-	@$(RM) -rf $(DATADIR)/random02_avg.csv
-	@$(RM) -rf $(DATADIR)/random_avg.csv
-	@$(RM) -rf $(PROJECT_ROOT)/fit.log
-	@echo "Plots made"
+report:
+	@cd $(DOCDIR);convert *.eps *.jpg;latex cs296_report_02;bibtex cs296_report_02;latex cs296_report_02;latex cs296_report_02;dvipdf cs296_report_02.dvi;
 
 clean:
 	@$(ECHO) -n "Cleaning up..."
-	@$(RM) -rf $(OBJDIR) *~ $(DEPS) $(SRCDIR)/*~ $(DATADIR) $(PLOTSDIR)
+	@$(RM) -rf $(DOCDIR)/html/ $(DOCDIR)/*.pdf $(DOCDIR)/*.dvi $(DOCDIR)/*.log $(DOCDIR)/*.bbl $(DOCDIR)/*.blg $(DOCDIR)/*.aux $(DOCDIR)/*.jpg
+	@$(RM) -rf $(PROJECT_ROOT)/my*
 	@$(ECHO) "Done"
 
 distclean: clean
-	@$(RM) -rf $(BINDIR) $(DOCDIR)/html
 	@$(RM) -rf $(EXTERNAL_ROOT)/lib/* $(EXTERNAL_ROOT)/include/* $(EXTERNAL_ROOT)/src/Box2D
 

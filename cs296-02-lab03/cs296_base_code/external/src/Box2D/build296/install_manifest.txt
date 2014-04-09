@@ -47,5 +47,5 @@
 /home/dora/cs296_project/cs296-02-lab03/cs296_base_code/external/src/Box2D/build296/../../../../external/include/Box2D/Rope/b2Rope.h
 /home/dora/cs296_project/cs296-02-lab03/cs296_base_code/external/src/Box2D/build296/../../../../external/lib/libBox2D.a
 /home/dora/cs296_project/cs296-02-lab03/cs296_base_code/external/src/Box2D/build296/../../../../external/lib/Box2D/Box2D-targets.cmake
-/home/dora/cs296_project/cs296-02-lab03/cs296_base_code/external/src/Box2D/build296/../../../../external/lib/Box2D/Box2D-targets-noconfig.cmake
+/home/dora/cs296_project/cs296-02-lab03/cs296_base_code/external/src/Box2D/build296/../../../../external/lib/Box2D/Box2D-targets-debug.cmake
 /home/dora/cs296_project/cs296-02-lab03/cs296_base_code/external/src/Box2D/build296/../../../../external/lib/Box2D/Box2DConfig.cmake

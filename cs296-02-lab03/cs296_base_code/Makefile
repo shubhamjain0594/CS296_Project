@@ -74,7 +74,7 @@ setup:
 
 $(BINDIR)/$(TARGET): $(OBJS)
 	@$(PRINTF) "$(MESG_COLOR)Building executable:$(NO_COLOR) $(FILE_COLOR) %16s$(NO_COLOR)" "$(notdir $@)"
-	@$(CC) -o $@ $(LDFLAGS) $(OBJS) $(LIBS) 2> temp.log || touch temp.err
+	@$(CC) -Wall -pg -o $@ $(LDFLAGS) $(OBJS) $(LIBS) 2> temp.log || touch temp.err
 	@if test -e temp.err; \
 	then $(PRINTF) $(ERR_FMT) $(ERR_STRING) && $(CAT) temp.log; \
 	elif test -s temp.log; \
@@ -89,7 +89,7 @@ test1:
 	@test -f $(EXTERNAL_ROOT)/include/Box2D/Box2D.h || { echo "Installing Box2D" ; make test2 ; }
 
 test2:
-	cd $(BOX2DPATH);	pwd;	rm -rf Box2D;	tar -xvzf Box2D.tgz;	cd Box2D;	mkdir -p build296;	cd build296;	cmake ../;	make;	make install;	cd ..;	cd ..;	cd ..;	cd ..
+	@cd $(BOX2DPATH);	pwd;	rm -rf Box2D;	tar -xvzf Box2D.tgz;    patch $(PATCHFILE)/b2Timer.cpp $(PATCHPATH)/b2Timer_cpp.patch;  patch $(PATCHFILE)/b2Timer.h $(PATCHPATH)/b2Timer_h.patch;  cd Box2D;	mkdir -p build296;	cd build296;	cmake -DCMAKE_BUILD_TYPE=Debug ../;	make;	make install;	cd ..;	cd ..;	cd ..;	cd ..
 	@$(ECHO) "Box2D installed successfully"
 
 exelib: setup test1 $(OBJS) 
@@ -141,3 +141,4 @@ clean:
 
 distclean: clean
 	@$(RM) -rf $(EXTERNAL_ROOT)/lib/* $(EXTERNAL_ROOT)/include/* $(EXTERNAL_ROOT)/src/Box2D
+

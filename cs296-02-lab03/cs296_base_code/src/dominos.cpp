@@ -723,7 +723,7 @@ namespace cs296
 		Terrain2vertices[1].Set(0.f, 35.0f);
 		Terrain2vertices[2].Set(60.f, 60.f);
 		Terrain2vertices[3].Set(130.f, 60.f);
-		Terrain2vertices[4].Set(210.f, 0.f);
+		Terrain2vertices[4].Set(230.f, 0.f);
 		b2Body* Terrain2;
 		b2PolygonShape Terrain2shape;
 		Terrain2shape.Set(Terrain2vertices, 5);
@@ -735,6 +735,24 @@ namespace cs296
 		Terrain2bd.position.Set(190.f, 0.f);
 		Terrain2 = m_world->CreateBody(&Terrain2bd);
 		Terrain2->CreateFixture(&Terrain2fd);
+		
+		b2Vec2 Terrain3vertices[5];
+		Terrain3vertices[0].Set(0.f, 0.f);
+		Terrain3vertices[1].Set(100.f, 40.0f);
+		Terrain3vertices[2].Set(200.f, 60.f);
+		Terrain3vertices[3].Set(330.f, 30.f);
+		Terrain3vertices[4].Set(430.f, 0.f);
+		b2Body* Terrain3;
+		b2PolygonShape Terrain3shape;
+		Terrain3shape.Set(Terrain3vertices, 5);
+		b2FixtureDef Terrain3fd;
+		Terrain3fd.shape = &Terrain3shape;
+		Terrain3fd.friction = 1.0f;
+		Terrain3fd.restitution = 1.0f;
+		b2BodyDef Terrain3bd;
+		Terrain3bd.position.Set(420.f, 0.f);
+		Terrain3 = m_world->CreateBody(&Terrain3bd);
+		Terrain3->CreateFixture(&Terrain3fd);
 
     }
   }
