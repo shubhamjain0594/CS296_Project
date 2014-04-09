@@ -40,14 +40,16 @@ using namespace std;
 namespace cs296
 {	
 	float i=0;
-	b2RevoluteJoint* frontJoint;
-	b2RevoluteJoint* backJoint;
-	b2RevoluteJoint* centerBackJoint;
-	b2RevoluteJoint* centerFrontJoint;
+	b2RevoluteJoint* frontJoint; /*!< The revolute joint between frontmost tyre and rod connected to it */
+	b2RevoluteJoint* backJoint;/*!< The revolute joint between centre front tyre and rod connected to it */
+	b2RevoluteJoint* centerBackJoint;/*!< The revolute joint between centre back tyre and rod connected to it */
+	b2RevoluteJoint* centerFrontJoint;/*!< The revolute joint between backmost tyre and rod connected to it */
+	///The inputs taken from the keyboard
  	void dominos_t::keyboard(unsigned char key)
 	{
 		switch(key)
 		{
+			/**When 'd' key is pressed the speed of the all the revolute joints of tyres increases by 0.1f for each press untill it becomes 3.f*/
 			case('d'):
 				if(i <3){
 				i = i+0.1f;
@@ -57,6 +59,7 @@ namespace cs296
 				centerFrontJoint->SetMotorSpeed(i);
 				centerBackJoint->SetMotorSpeed(i);
 				break;
+			/**Similarly when 'a' key is pressed the speed of the all the revolute joints of tyres decreases by 0.1f for each press untill it becomes -3.f*/
 			case('a'):
 				if(i>-3){
 				i = i-0.1f;
@@ -77,7 +80,7 @@ namespace cs296
 
 	/*! \par Block 1: Ground
 	 * A Box2D Edge shape used to represent ground. <br>
-	 * Edge is set between two points on x-axis x1=-90 and x2=90. <br>
+	 * Edge is set between two points on x-axis x1=-1800 and x2=1800. <br>
 	 * bd is a Box2D body definition.<br>
 	 * b1 is then pointed to a body created with body definition bd<br>
 	 * A fixture is created on the body with Edge shape created earlier and 0 density
@@ -89,8 +92,18 @@ namespace cs296
       b1 = m_world->CreateBody(&bd);
       b1->CreateFixture(&shape, 0.0f);
     }
+	
     {
 		//Center Horizontal top rod
+		/*! \par centerTop
+		 * Center Horizontal top rod
+		 * Shape: b2PolygonShape
+		 * A box of length 14.f and breadth 2.f
+		 * Position x=0,y=15.f
+		 * It is a dynamic body
+		 * categoryBit = 0x0002
+		 * density=2700.f
+		 */
 		b2PolygonShape centerTopShape;
 		centerTopShape.SetAsBox(7.0f, 1.f);
 		b2BodyDef centerTopbd;
@@ -103,12 +116,24 @@ namespace cs296
 		centerTopfd.shape = &centerTopShape;
 		centerTop->CreateFixture(&centerTopfd);
 		//Center Horizontal bottom rod
+		/*! \par centerBottom
+		 * Position x=0, y=11.f 
+		 * It is a dynamic body
+		 * body definition same as centerTop
+		 */
 		b2BodyDef centerBottombd;
 		centerBottombd.position.Set(0.0f, 11.f);
 		centerBottombd.type = b2_dynamicBody;
 		b2Body* centerBottom = m_world->CreateBody(&centerBottombd);
 		centerBottom->CreateFixture(&centerTopfd);
 		//Center vertical left rod
+		/*! \par centerLeft
+		 * Center vertical left rod
+		 * A polygon with four vertices around a point near the horizontal bottom rod
+		 * The position of its representative point is x=-6, y=10
+		 * Category bit=0x0002
+		 * Density of the rod is same as alumninium = 2700.f
+		 */
 		b2PolygonShape centerLeftShape;
 		int32 count = 4;
 		b2Vec2 ver[4];
@@ -127,12 +152,24 @@ namespace cs296
 		centerLeftfd.shape = &centerLeftShape;
 		centerLeft->CreateFixture(&centerLeftfd);
 		//Center Vertical Right rod
+		/*! \par centerRight
+		 * This is also a dynamic body
+		 * The fixture definition is same to center vertical left rod
+		 * The position is set at x=6, y=10
+		 */
 		b2BodyDef centerRightbd;
 		centerRightbd.position.Set(6.0f, 10.0f);
 		centerRightbd.type = b2_dynamicBody;
 		b2Body* centerRight = m_world->CreateBody(&centerRightbd);
 		centerRight->CreateFixture(&centerLeftfd);
 		//Joint between center left and center top  rod
+		/*! \par centerLeftTopJoint
+		 * A Revolute joint between center left and center top rod
+		 * At a position x=-6 and y=15
+		 * Body A is centerTop and its local anchor with respect to its representative point is (-6,0)
+		 * Body B is centerLeft and its local anchor is set at (0,5)
+		 * collideConneced Boolean is set to false so that the two rods do not collide
+		 */
 		b2RevoluteJointDef centerLeftTopJoint;
         b2Vec2 centerLeftTopJointv1(-6.0f,15.0f);
         centerLeftTopJoint.Initialize(centerTop,centerLeft,centerLeftTopJointv1);
@@ -141,6 +178,12 @@ namespace cs296
         centerLeftTopJoint.collideConnected = false;
         m_world->CreateJoint(&centerLeftTopJoint);	
         //Joint between center right and center top  rod
+        /*! \par centerRightTopJoint
+         * This is also a revolute joint between center right and center top joint
+         * Body a is centerTop and its local anchor is set at (6,0)
+         * Body B is centerRight and its local Anchor is set at (0,5) at the end point of centerTop rod
+         * collideConneced Boolean is set to false so that the two rods do not collide
+		 */
 		b2RevoluteJointDef centerRightTopJoint;
         b2Vec2 centerRightTopJointv1(6.0f,15.0f);
         centerRightTopJoint.Initialize(centerTop,centerRight,centerRightTopJointv1);
@@ -149,6 +192,13 @@ namespace cs296
         centerRightTopJoint.collideConnected = false;
         m_world->CreateJoint(&centerRightTopJoint);	
         //Joint between center left and center bottom  rod
+        /*! \par centerLeftBottomJoint
+         * This is a revolute joint between center left and center bottom rod
+         * It is made at an initial position of (-6,11)
+         * Body A=centerBottom, localAnchor=(-6,0)
+         * Body B=centerLeft, localAnchor=(0,1)
+         * collideConnected is false and hence the two bodies do not collide 
+         */
 		b2RevoluteJointDef centerLeftBottomJoint;
         b2Vec2 centerLeftBottomJointv1(-6.0f,11.0f);
         centerLeftBottomJoint.Initialize(centerBottom,centerLeft,centerLeftBottomJointv1);
@@ -157,6 +207,12 @@ namespace cs296
         centerLeftBottomJoint.collideConnected = false;
         m_world->CreateJoint(&centerLeftBottomJoint);	
         //Joint between center right and center top  rod
+        /*! \par centerRightBottomJoint
+         * Position is set at (6,11)
+         * Body A is centerBottom and its local Anchor is set at (6,0)
+         * Body B is centerRight and its local anchor is set at (0,1)
+         * Again the collideConnected boolean is false so that the two rods do not collide 
+         */
 		b2RevoluteJointDef centerRightBottomJoint;
         b2Vec2 centerRightBottomJointv1(6.0f,11.0f);
         centerRightBottomJoint.Initialize(centerBottom,centerRight,centerRightBottomJointv1);
@@ -165,6 +221,12 @@ namespace cs296
         centerRightBottomJoint.collideConnected = false;
         m_world->CreateJoint(&centerRightBottomJoint);	
         //Center left tyre 
+        /*! \par centerLeftTire and the centerRightTire
+         *  Radius of the tyres is 3.5f
+         * Friction of the tyre is 1.f
+         * The coefficient of restitution is also 1.f for possibility of elastic collisions
+         * The position of centerLeftTire is (-6,3.5) and centerRightTire is (6,3.5)
+         */
         b2CircleShape centerLeftcircle;
         centerLeftcircle.m_radius = 3.5f;
         b2FixtureDef centerLeftTirefd;
@@ -184,6 +246,13 @@ namespace cs296
         b2Body* centerRightTire = m_world->CreateBody(&centerRightTirebd);
         centerRightTire->CreateFixture(&centerLeftTirefd);	
         //Joint between center left tire and center left rod
+        /*! \par centerLeftTireJoint
+         * A revolute joint between centerLeftTire and centerLeft rod
+         * The local anchor of centerLeft rod is at (0,-6.5f)
+         * The motor of the joint is enabled and collideConnected is disabled
+         * The maximum motor torque that is allowed is 20000000.0f
+         * This joint is created in m_world as centerBackJoint
+         */
         b2RevoluteJointDef centerLeftTirejoint;
         centerLeftTirejoint.Initialize(centerLeftTire,centerLeft,centerLeftTire->GetWorldCenter());
         centerLeftTirejoint.localAnchorB.Set(0.0f,-6.5f);
@@ -193,6 +262,13 @@ namespace cs296
         //centerLeftTirejoint.motorSpeed = 10.0f;
         centerBackJoint=(b2RevoluteJoint*)m_world->CreateJoint(&centerLeftTirejoint);	
         //Joint between center right tire and center right rod
+        /*! \par centerRightTireJoint
+         * A revolute joint between centerRightTire and centerRight
+         * The local Anchor of centerRight rod is set at (0,-6.5f)
+         * Similar to the centerLeftTireJoint the joint motor is enabled and collideConnected is disabled
+         * The maximum motor torque that is allowed is 20000000.0f
+         * It is created as centerFrontJoint in m_world
+         */
         b2RevoluteJointDef centerRightTirejoint;
         centerRightTirejoint.Initialize(centerRightTire,centerRight,centerRightTire->GetWorldCenter());
         centerRightTirejoint.localAnchorB.Set(0.0f,-6.5f);
@@ -202,6 +278,12 @@ namespace cs296
         //centerRightTirejoint.motorSpeed = 10.0f;
         centerFrontJoint=(b2RevoluteJoint*)m_world->CreateJoint(&centerRightTirejoint);
         //main frame plate
+        /*! \par mainFramePlate
+         * It is the main frame plate of the bot
+         * The Shape of the plate is b2PolygonShape and it is a box with length=21 and breadth=1
+         * The category bit of the frame is 0x0008 and the mask bit is 0x0010 
+         * The density is same as that of aluminium = 2700  
+         */
 		b2PolygonShape mainFramePlate;
 		mainFramePlate.SetAsBox(10.5f, 0.25f);
 		b2BodyDef mainFramebd;
@@ -215,6 +297,13 @@ namespace cs296
 		mainFramefd.shape = &mainFramePlate;
 		mainFrame->CreateFixture(&mainFramefd);
 		//main frame structure for attaching central bogeys
+		/*! \par attachCenterFrameShape
+		 * Main frame structure for attaching central bogeys
+		 * Category bit is 0x0008 and mask bit 0x0010
+		 * The density is again 2700
+		 * The length and breadth are 4.5(vertical) and 3(horizontal) respectively
+		 * The position is set to (0,13.25)
+		 */
 		b2PolygonShape attachCenterFrameshape;
 		attachCenterFrameshape.SetAsBox(1.5f, 2.75f);
 		b2BodyDef attachCenterFramebd;
@@ -228,6 +317,12 @@ namespace cs296
 		attachCenterFramefd.shape = &attachCenterFrameshape;
 		attachCenterFrame->CreateFixture(&attachCenterFramefd);
 		//Joint for main frame and center top rod
+		/*! \par mainTopJoint
+		 * This is a revolute joint between attach centerFrame and centerTop
+		 * The local anchor of attach center frame is (0,1.75)
+		 * The allowed rotation of he joint is (-0.6f,0.6f)
+		 * collideConnected is disabled
+		 */
         b2RevoluteJointDef mainTopjoint;
 		mainTopjoint.Initialize(attachCenterFrame,centerTop,centerTop->GetWorldCenter());
 		mainTopjoint.localAnchorA.Set(0.0f,1.75f) ;
@@ -238,6 +333,11 @@ namespace cs296
 		mainTopjoint.collideConnected = false;
 		m_world->CreateJoint(&mainTopjoint);		
 		//Joint for main frame and bottom rod 
+		/*! \par mainBottomjoint
+		 * This is a revolute joint between attachCenterFrame and centerBottom
+		 * The local anchor of attachCenterFrame is set at (0,-1.75f)
+		 * collideConnected is disabled
+		 */
 		b2RevoluteJointDef mainBottomjoint;
 		mainBottomjoint.Initialize(attachCenterFrame,centerBottom,centerBottom->GetWorldCenter());
 		mainBottomjoint.localAnchorA.Set(0.0f,-1.75f) ;
@@ -245,6 +345,12 @@ namespace cs296
 		mainBottomjoint.collideConnected = false;
 		m_world->CreateJoint(&mainBottomjoint);		
 		//Joint for main plate and main frame to attach center frame a weld joint
+		/*! \par mainFameCenterJoint
+		 * It is weld joint between  attachCenterFrame and mainFrame
+		 * The local anchor of attachCenterFrame is (0,-2,75)
+		 * The local anchor of mainFrame is (0.5,0.25)
+		 * collideConnected is disabled
+		 */
 		b2WeldJointDef mainFrameCenterJoint;
 		mainFrameCenterJoint.bodyA=attachCenterFrame;
 		mainFrameCenterJoint.bodyB=mainFrame;
@@ -253,6 +359,13 @@ namespace cs296
 		mainFrameCenterJoint.collideConnected = false;
 		m_world->CreateJoint(&mainFrameCenterJoint);
 		//Attaching back fork
+		/*! \par backFrameShape
+		 * This is used to attch the back fork
+		 * It is set as a box of horizontal length 2 and verical length 4.5f
+		 * Its position is set at (-10,13.25)
+		 * Its category bit is 0x0008
+		 * The density is 10000 
+		 */
 		b2PolygonShape backFrameShape;
 		backFrameShape.SetAsBox(1.f, 2.75f);
 		b2BodyDef backFramebd;
@@ -261,11 +374,17 @@ namespace cs296
 		b2Body* backFrame = m_world->CreateBody(&backFramebd);
 		b2FixtureDef backFramefd;
 		backFramefd.filter.categoryBits = 0x0008;
-		backFramefd.density = 10000.f;
+		backFramefd.density = 2700.f;
 		backFramefd.friction = 0.0f;
 		backFramefd.shape = &backFrameShape;
 		backFrame->CreateFixture(&backFramefd);
 		//Joint for main plate and back frame to attach back frame a weld joint
+		/*! \par mainFrameBackJoint
+		 * It is weld joint between main plate and back frame to attch back frame
+		 * The local anchor of backFrame is (0,2.75)
+		 * The local anchor of mainFrame is (-9.5,0.25)
+		 * collideConnected is disabled
+		 */
 		b2WeldJointDef mainFrameBackJoint;
 		mainFrameBackJoint.bodyA=backFrame;
 		mainFrameBackJoint.bodyB=mainFrame;
@@ -274,6 +393,9 @@ namespace cs296
 		mainFrameBackJoint.collideConnected = false;
 		m_world->CreateJoint(&mainFrameBackJoint);
 		//Back frame part 3
+		/*! \par backPart3
+		 * 
+		 */
 		b2Vec2 backPart3vertices[4];
 		backPart3vertices[2].Set(1.f, 1.f);
 		backPart3vertices[1].Set(1.f, -1.0f);
