@@ -1,0 +1,12 @@
+reset
+set key right top
+set autoscale
+set boxwidth 0.5 relative
+set style fill solid
+set terminal png
+set output "g02_plot4.png"
+set title "Frequency"
+set xlabel "Iteration Values"
+set ylabel "Frequency"
+plot "data/frequency.csv" using 0:2 with boxes title "Frequency",  "data/frequency.csv" using 0:3 title "Cumulative Frequency" smooth bezier, "data/frequency.csv" using 0:3    
+pause 5

@@ -1,0 +1,15 @@
+reset
+set key right top
+set autoscale
+set boxwidth 0.5 relative
+set style fill solid
+set terminal png
+set output "../plots/g02_plot05.png"
+set title "Frequency"
+set xlabel "Iteration Values"
+set ylabel "Step Time"
+f(x)=a*x+b
+fit f(x) "../data/random_avg.csv" using 1:2 via a, b
+g(x)=c*x+d
+fit g(x) "../data/random02_avg.csv" using 1:2 via c, d
+plot "../data/random_avg.csv" using 1:2, f(x) title "random data: Best fit curve", "../data/random02_avg.csv" using 1:2, g(x) title "Normal data: Best fit curve"  

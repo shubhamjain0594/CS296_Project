@@ -1,0 +1,10 @@
+#!/bin/bash
+
+perf record -o c1.dat -g bin/cs296_base 10000
+perf script -i c1.dat | python gprof2dot.py -f perf | dot -Tpng -o c1.png
+perf record -o c2.dat -g bin/cs296_base 15000
+perf script -i c2.dat | python gprof2dot.py -f perf | dot -Tpng -o c2.png
+perf record -o c3.dat -g bin/cs296_base 1000 
+perf script -i c3.dat | python gprof2dot.py -f perf | dot -Tpng -o c3.png
+perf record -o c4.dat -g bin/cs296_base 1500
+perf script -i c4.dat | python gprof2dot.py -f perf | dot -Tpng -o c4.png

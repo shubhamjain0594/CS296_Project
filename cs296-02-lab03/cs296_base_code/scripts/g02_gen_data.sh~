@@ -1,0 +1,18 @@
+#!/bin/bash
+# g02_gen_data.sh
+
+LIMIT=150 # upper limit for number of iterations
+
+a=1
+
+while [ $a -le "$LIMIT" ]
+do
+b=1
+INLIMIT=150
+while [ $b -le "$INLIMIT" ] 
+do 
+ ../bin/cs296_base "$a" > ../data/g02out-$a-$b.txt  
+ b=$(($b+1))
+done
+ a=$(($a+1))
+done	

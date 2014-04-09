@@ -1,0 +1,12 @@
+reset
+set key right top
+set autoscale
+set boxwidth 0.5 relative
+
+set style fill solid
+set terminal png
+set output "plots/g02_plot3.png"
+set title "Average Sum"
+set xlabel "Iteration Values"
+set ylabel "Reruns"
+plot "data/average.csv" using 1:2 with lines title "Step Time", '' u 1:2:7:8 title 'errors' with errorbars

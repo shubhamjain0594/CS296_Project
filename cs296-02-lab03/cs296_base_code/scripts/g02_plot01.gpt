@@ -1,0 +1,14 @@
+reset
+set key right top
+set autoscale
+set boxwidth 0.5 relative
+set style fill solid
+set title "Average of step time and loop time"
+set xlabel "Iteration Values"
+set ylabel "Average time over reruns"
+plot "../data/average.csv" using 1:2 with boxes title "Step time", "" using 1:6 with lines title "Loop time"
+min_y = GPVAL_DATA_Y_MIN
+max_y = GPVAL_DATA_Y_MAX
+set terminal png
+set output "../plots/g02_plot01.png"
+plot min_y,max_y,"../data/average.csv" using 1:2 with boxes title "Step time", "" using 1:6 with lines title "Loop time"

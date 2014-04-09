@@ -1,0 +1,23 @@
+#!/bin/bash
+# Linux users have to change $8 to $9
+
+
+rm -f ../data/frequency.csv
+LIMIT=150
+INLIMIT=15
+ITERATIONS=1
+
+awk '
+BEGIN { ARGV[1]="../data/g02_lab05data_02.csv"
+	ARGC=2  	
+	cuml=0
+	FS=","
+	}	
+{ 	if($1=="23")
+	{ cuml+=$3
+		print "23",$3,cuml >> "../data/frequency.csv" }
+
+}
+END { }		
+'
+	
