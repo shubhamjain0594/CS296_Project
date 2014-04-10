@@ -268,7 +268,7 @@ namespace cs296
         centerLeftTirejoint.collideConnected = false;
         centerLeftTirejoint.enableMotor = true;
         centerLeftTirejoint.maxMotorTorque = 20000000.0f;
-        centerLeftTirejoint.motorSpeed = 3.0f;
+        //centerLeftTirejoint.motorSpeed = 3.0f;
         centerBackJoint=(b2RevoluteJoint*)m_world->CreateJoint(&centerLeftTirejoint);	
         //Joint between center right tire and center right rod
         /*! \par centerRightTireJoint
@@ -284,7 +284,7 @@ namespace cs296
         centerRightTirejoint.collideConnected = false;	
         centerRightTirejoint.enableMotor = true;
         centerRightTirejoint.maxMotorTorque = 20000000.0f;
-        centerRightTirejoint.motorSpeed = 3.0f;
+        //centerRightTirejoint.motorSpeed = 3.0f;
         centerFrontJoint=(b2RevoluteJoint*)m_world->CreateJoint(&centerRightTirejoint);
         //main frame plate
         /*! \par mainFramePlate
@@ -548,7 +548,7 @@ namespace cs296
         backTirejoint.collideConnected = false;	
         backTirejoint.enableMotor = true;
         backTirejoint.maxMotorTorque = 20000000.0f;
-        backTirejoint.motorSpeed = 3.0f;
+        //backTirejoint.motorSpeed = 3.0f;
         backJoint=(b2RevoluteJoint*)m_world->CreateJoint(&backTirejoint);
         //Box to join front fork and main plate
         /*! \par frontFrameshape
@@ -848,7 +848,7 @@ namespace cs296
         frontTirejoint.collideConnected = false;	
         frontTirejoint.enableMotor = true;
         frontTirejoint.maxMotorTorque = 20000000.0f;
-        frontTirejoint.motorSpeed = 3.0f;
+        //frontTirejoint.motorSpeed = 3.0f;
         frontJoint = (b2RevoluteJoint*)m_world->CreateJoint(&frontTirejoint);
 	}
 	//Terrain

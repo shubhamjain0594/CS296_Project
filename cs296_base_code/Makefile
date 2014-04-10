@@ -23,6 +23,8 @@ OBJDIR = $(PROJECT_ROOT)/myobjs
 BINDIR = $(PROJECT_ROOT)/mybins
 LIBDIR = $(PROJECT_ROOT)/mylibs
 DOCDIR = $(PROJECT_ROOT)/doc
+SCRIPTDIR = $(PROJECT_ROOT)/scripts
+INSTALL_FOLDER = ../cs296_g02_project
 
 # Library Paths
 BOX2D_ROOT=$(EXTERNAL_ROOT)
@@ -61,7 +63,7 @@ INCS := $(wildcard $(SRCDIR)/*.hpp)
 OBJS := $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 
-.PHONY: all setup doc clean distclean exe
+.PHONY: all setup doc clean distclean exe report html
 
 exe: setup test1 $(BINDIR)/$(TARGET)
 
@@ -72,9 +74,10 @@ setup:
 	@mkdir -p mybins
 
 
+
 $(BINDIR)/$(TARGET): $(OBJS)
 	@$(PRINTF) "$(MESG_COLOR)Building executable:$(NO_COLOR) $(FILE_COLOR) %16s$(NO_COLOR)" "$(notdir $@)"
-	@$(CC) -Wall -pg -o $@ $(LDFLAGS) $(OBJS) $(LIBS) 2> temp.log || touch temp.err
+	@$(CC) -Wall -pg -O3 -o $@ $(LDFLAGS) $(OBJS) $(LIBS) 2> temp.log || touch temp.err
 	@if test -e temp.err; \
 	then $(PRINTF) $(ERR_FMT) $(ERR_STRING) && $(CAT) temp.log; \
 	elif test -s temp.log; \
@@ -89,33 +92,13 @@ test1:
 	@test -f $(EXTERNAL_ROOT)/include/Box2D/Box2D.h || { echo "Installing Box2D" ; make test2 ; }
 
 test2:
-	@cd $(BOX2DPATH);	pwd;	rm -rf Box2D;	tar -xvzf Box2D.tgz;    patch $(PATCHFILE)/b2Timer.cpp $(PATCHPATH)/b2Timer_cpp.patch;  patch $(PATCHFILE)/b2Timer.h $(PATCHPATH)/b2Timer_h.patch;  cd Box2D;	mkdir -p build296;	cd build296;	cmake -DCMAKE_BUILD_TYPE=Debug ../;	make;	make install;	cd ..;	cd ..;	cd ..;	cd ..
+	@cd $(BOX2DPATH);	pwd;	rm -rf Box2D;	tar -xvzf Box2D.tgz;    patch $(PATCHFILE)/b2Timer.cpp $(PATCHPATH)/b2Timer_cpp.patch;  patch $(PATCHFILE)/b2Timer.h $(PATCHPATH)/b2Timer_h.patch;  cd Box2D;	mkdir -p build296;	cd build296;	cmake -DCMAKE_BUILD_TYPE=Release ../;	make;	make install;	cd ..;	cd ..;	cd ..;	cd ..
 	@$(ECHO) "Box2D installed successfully"
-
-exelib: setup test1 $(OBJS) 
-ifeq ($(SHARED_LIB),TRUE)
-	make dynamic
-else
-	make static
-endif
-
-static: 
-	@rm -f $(LIBDIR)/libCS296.a
-	@$ echo "Creating static library"
-	@ar -cvq $(LIBDIR)/libCS296.a $(filter-out $(OBJDIR)/main.o,$(OBJS))	
-	@$(CC) -o $(BINDIR)/cs296_02_exelib $(OBJDIR)/main.o  $(LIBDIR)/libCS296.a $(LDFLAGS) $(LIBS)	
-
-dynamic: 
-	@rm -f $(LIBDIR)/libCS296test.so
-	export LD_LIBRARY_PATH=$(LIBDIR):$LD_LIBRARY_PATH
-	@$ echo "Creating dynamic library" 
-	@$(CC) -shared -Wl $(filter-out $(OBJDIR)/main.o,$(OBJS)) -o $(LIBDIR)/libCS296test.so
-	@$(CC) -o $(BINDIR)/cs296_02_exelib $(LDFLAGS) $(OBJDIR)/main.o $(LIBDIR)/libCS296test.so $(LIBS) 
 
 $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	@make test1
 	@$(PRINTF) "$(MESG_COLOR)Compiling: $(NO_COLOR) $(FILE_COLOR) %25s$(NO_COLOR)" "$(notdir $<)"
-	@$(CC) $(CPPFLAGS) -c $< -o $@ -MD 2> temp.log || touch temp.err
+	@$(CC) $(CPPFLAGS) -O3 -c $< -o $@ -MD 2> temp.log || touch temp.err
 	@if test -e temp.err; \
 	then $(PRINTF) $(ERR_FMT) $(ERR_STRING) && $(CAT) temp.log; \
 	elif test -s temp.log; \
@@ -131,14 +114,26 @@ doc:
 	@$(ECHO) "Done"
 
 report:
-	@cd $(DOCDIR);convert *.eps *.jpg;latex cs296_report_02;bibtex cs296_report_02;latex cs296_report_02;latex cs296_report_02;dvipdf cs296_report_02.dvi;
-
+	@cd $(DOCDIR);latex cs296_report_02;bibtex cs296_report_02;latex cs296_report_02;latex cs296_report_02;dvipdf cs296_report_02.dvi;
+	
 clean:
 	@$(ECHO) -n "Cleaning up..."
 	@$(RM) -rf $(DOCDIR)/html/ $(DOCDIR)/*.pdf $(DOCDIR)/*.dvi $(DOCDIR)/*.log $(DOCDIR)/*.bbl $(DOCDIR)/*.blg $(DOCDIR)/*.aux $(DOCDIR)/*.jpg
 	@$(RM) -rf $(PROJECT_ROOT)/my*
+	@$(RM) -rf $(INSTALL_FOLDER)
 	@$(ECHO) "Done"
 
+install: setup exe doc report 
+	@mkdir -p $(INSTALL_FOLDER)
+	@mkdir -p $(INSTALL_FOLDER)/doc
+	@mkdir -p $(INSTALL_FOLDER)/exe
+	@cp $(BINDIR)/$(TARGET) $(INSTALL_FOLDER)/exe
+	@cp $(DOCDIR)/*.pdf $(INSTALL_FOLDER)/doc
+	@cp $(DOCDIR)/*.txt $(INSTALL_FOLDER)/
+
+dist: distclean
+	@cd ../; \
+	tar -cvf cs296_g02_project.tar.gz $(PROJECT_ROOT)
+	
 distclean: clean
 	@$(RM) -rf $(EXTERNAL_ROOT)/lib/* $(EXTERNAL_ROOT)/include/* $(EXTERNAL_ROOT)/src/Box2D
-

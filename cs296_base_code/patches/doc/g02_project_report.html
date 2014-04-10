@@ -1,0 +1,65 @@
+<!DOCtype html>
+<html><link href="index.css" rel="stylesheet" type="text/css" /><h2>Profiling</h2>
+
+Release Prof O2:<br>
+Number of Iterations: 10000<br>
+Average time per step is 0.0351558 ms<br>
+Average time for collisions is 0.000746974 ms<br>
+Average time for position updates is 0.0117901 ms<br>
+Average time for velocity updates is 0.00714458 ms<br>
+Total loop time is 435.383 ms<br>
+<figure><p align="center"> <img src="../doc/output_release_02.jpg"> </p><figcaption align="center">Call graph for O2 release</figcaption> </figure>
+Release Prof O3: <br>
+Number of Iterations: 10000<br>
+Average time per step is 0.0343891 ms<br>
+Average time for collisions is 0.000729776 ms<br>
+Average time for position updates is 0.0114703 ms<br>
+Average time for velocity updates is 0.00710644 ms<br>
+Total loop time is 390.961 ms<br>
+
+<figure><p align="center"> <img src="../doc/output_release_03.jpg"> </p><figcaption align="center">Call graph for O3 release</figcaption> </figure>
+
+<figure><p align="center"> <img src="../doc/g02_lab09_plot01.jpg"> </p><figcaption align="center">Figure: O3 profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/g02_lab09_plot02.jpg"> </p><figcaption align="center">Figure: O3 profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/g02_lab09_plot03.jpg"> </p><figcaption align="center">Figure: O3 profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/g02_lab09_plot04.jpg"> </p><figcaption align="center">Figure: O3 profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/g02_lab09_plot05.jpg"> </p><figcaption align="center">Figure: O3 profiling</figcaption> </figure>
+Release Prof Ofast
+Number of Iterations: 10000<br>
+Average time per step is 0.0352842 ms<br>
+Average time for collisions is 0.000765978 ms<br>
+Average time for position updates is 0.0117918 ms<br>
+Average time for velocity updates is 0.00718483 ms<br>
+Total loop time is 401.07 ms<br>
+
+<figure><p align="center"> <img src="../doc/output_release_0fast.jpg"> </p><figcaption align="center">callgraph for release ofast</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/ofast1.jpg"> </p><figcaption align="center">Figure: Ofast profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/ofast2.jpg"> </p><figcaption align="center">Figure: Ofast profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/ofast3.jpg"> </p><figcaption align="center">Figure: Ofast profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/ofast4.jpg"> </p><figcaption align="center">Figure: Ofast profiling</figcaption> </figure>
+<figure><p align="center"> <img src="../doc/ofast5.jpg"> </p><figcaption align="center">Figure: Ofast profiling</figcaption> </figure>
+Release Prof Os:<br>
+Number of Iterations: 10000<br>
+Average time per step is 0.0353292 ms<br>
+Average time for collisions is 0.000757077 ms<br>
+Average time for position updates is 0.0117607 ms<br>
+Average time for velocity updates is 0.00729658 ms<br>
+Total loop time is 450.493 ms<br>
+
+<figure><p align="center"> <img src="../doc/output_release_0s.jpg"> </p><figcaption align="center">Call graph for release Os</figcaption> </figure>
+
+Debug Prof:<br>
+Number of Iterations: 10000<br>
+Average time per step is 0.174029 ms<br>
+Average time for collisions is 0.00541188 ms<br>
+Average time for position updates is 0.0433578 ms<br>
+Average time for velocity updates is 0.0511959 ms<br>
+Total loop time is 1874.54 ms<br>
+
+<figure><p align="center"> <img src="../doc/output_debug.jpg"> </p><figcaption align="center">Call graph for debug profiling</figcaption> </figure>
+<h2>Performance Optimization</h2>
+After running our code for different optimizations, we found out that -O3 profiling suited best to our code.<br>
+Generally Ofast profiling works better than -O3 but for our code -Ofast profiling increased the number of cycles instead of decreasing it.<br>
+
+
+</html>

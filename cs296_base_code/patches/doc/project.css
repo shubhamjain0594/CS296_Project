@@ -1,0 +1,64 @@
+body {
+	background : orange;
+}
+
+#groupName {
+	color : black;
+	display : block;
+	float : center;
+	font-size : 50px;
+	text-align : center;
+	background-color : yellow;
+	padding-left : 0px;
+	padding-right : 0px;
+}
+
+#team {
+	color : black;
+	display : block;
+	float : left;
+	font-size : 20px;
+	text-align : justify;
+	padding-left : 10px;
+	padding-right : 10px;
+}
+
+#navigation a:link a:visited {
+	font-weight : bold;
+	color : white;
+	text-align : center;
+	background-color : lightgreen;
+	text-decoration : none;
+	text-transform : uppercase;
+}
+
+#navigation a:hover a:active {
+	background-color : yellow;
+	width : 100%;
+}
+
+#navigation td {
+	font-weight : bold;
+	color : white;
+	width : 33.33%;
+	text-align : center;
+	background-color : yellow;
+}
+
+#contenttable td {
+	color : white;
+	text-align : center;
+	overflow:hidden;
+}
+
+#contenttable td img {
+	height : auto;
+	padding-right : 20px;
+	padding-top : 20px;
+	padding-bottom : 20px;
+	margin:0;	
+}
+
+#references {
+	font-size : 20px;
+}

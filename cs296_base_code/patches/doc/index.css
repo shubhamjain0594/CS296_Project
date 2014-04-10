@@ -1,0 +1,35 @@
+body
+	{
+		
+	background:#33CCCC;	
+	overflow-x:hidden;
+	}
+	h1
+	{
+		float:bottom;
+		text-align:center;
+	}
+	h2
+	{
+		float:bottom;
+		text-align:center;
+	}
+	#sub
+	{
+		background:#b0c4de;
+		border: 2px solid;
+		padding: 10px 40px;
+		border-radius:25px;
+		height:230px;
+		pading-left:0px;
+	}
+	para
+	{
+		border: 2px;
+		padding-left:300px; 
+	}
+	figure figcaption 
+	{
+    border: 1px dotted blue;
+    text-align: center;
+	}

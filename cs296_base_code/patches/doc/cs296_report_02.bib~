@@ -1,0 +1,15 @@
+@ONLINE{box2dman,
+Author = "Official Box2D Manual",
+link = "http://box2d.org/manual.pdf",
+}
+
+@book{book1,
+Author = "H.C. Verma",
+title = "Concepts of Physics",
+Publisher = "Bharti Bhawan",
+}
+
+@ONLINE{ieepaper,
+Author = "IEEE Paper by Songyi Dian, Tao Liu, Yan Liang, Mengyu Liang and Wei Zhen",
+link = "http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5985707&tag=1",
+}
